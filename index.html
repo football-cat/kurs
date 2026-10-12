@@ -20,7 +20,7 @@
 }}
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 html,body{height:100%;overflow:hidden;overscroll-behavior:none}
-body{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--bg);color:var(--fg);
+body{position:fixed;top:0;left:0;right:0;height:var(--h,100dvh);display:flex;flex-direction:column;background:var(--bg);color:var(--fg);
  font:17px/1.3 -apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;touch-action:manipulation;
  padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left)}
 body.scam{--acc:var(--org)}
@@ -42,18 +42,19 @@ h1{font-size:34px;font-weight:700;letter-spacing:.01em}
 .row.on .val::after{content:"";display:inline-block;width:2px;height:.95em;background:var(--acc);margin-left:2px;vertical-align:-.12em;animation:bl 1s steps(1) infinite}
 @keyframes bl{50%{opacity:0}}
 .ph{color:var(--sec)}
-.hdr{font-size:13px;color:var(--sec);text-transform:uppercase;padding:22px 16px 7px}
+.hdr{font-size:13px;color:var(--sec);text-transform:uppercase;padding:16px 16px 7px}
 .ft{font-size:13px;color:var(--sec);padding:7px 16px 0;line-height:1.45}
 .ft b{font-weight:500;color:var(--fg)}
 .sw{display:flex;align-items:center;min-height:52px;padding:0 16px;gap:12px}
 .sw .t{flex:1}.sw .t small{display:block;font-size:13px;color:var(--sec)}
 .sw input{accent-color:#34c759;transform:scale(1.15);transform-origin:right}
 .warn{color:var(--org)}
-.tv{margin-top:22px;background:var(--card);border-radius:12px;padding:14px 16px 12px;transition:opacity .25s}
+.tvw{flex:none;padding:0 16px 8px;max-width:520px;width:100%;margin:0 auto}
+.tv{background:var(--card);border-radius:12px;padding:10px 14px 11px;transition:opacity .25s;min-height:96px}
 .tv.f{opacity:0}
-.tv h2{font-size:13px;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.02em;margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.tv p{font-size:15px;line-height:1.4}
-.tv .m{display:flex;justify-content:space-between;margin-top:10px;font-size:12px;color:var(--sec)}
+.tv h2{font-size:12px;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.02em;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.tv h2 span{margin-left:auto;font-weight:400;text-transform:none;color:var(--sec);letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:55%}
+.tv p{font-size:14px;line-height:1.38;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .tv a{color:var(--acc);text-decoration:none}
 .kp{flex:none;background:var(--keyfn);padding:8px 6px calc(env(safe-area-inset-bottom) + 6px);
  display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
@@ -80,8 +81,8 @@ h1{font-size:34px;font-weight:700;letter-spacing:.01em}
  <div class="hdr">Opcje</div>
  <div class="grp"><label class="sw"><span class="t">Ściemokurs<small>100 ALL = 1 EUR</small></span><input type="checkbox" switch id="scam"></label></div>
  <div class="ft" id="src"></div>
- <div class="tv" id="tv"><h2>🇦🇱 Czy wiesz, że…</h2><p id="tvt"></p><div class="m"><span id="tvs"></span><span>Stuknij › następna</span></div></div>
 </div>
+<div class="tvw"><div class="tv" id="tv"><h2>🇦🇱 Czy wiesz, że…<span id="tvs"></span></h2><p id="tvt"></p></div></div>
 <div class="kp" id="kp">
  <button>1</button><button>2</button><button>3</button><button class="fn" data-k="C">C</button>
  <button>4</button><button>5</button><button>6</button><button class="fn" data-k="B" aria-label="Usuń"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M9 5h11a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H9l-6-7z"/><path d="m12 9.5 5 5m0-5-5 5"/></svg></button>
@@ -230,7 +231,7 @@ function shuf(){tvO=TV.map(function(_,i){return i});for(var i=tvO.length-1;i>0;i
 try{var st=JSON.parse(ls('tv'));if(st&&st.o&&st.o.length===TV.length){tvO=st.o;tvI=st.i}}catch(e){}
 if(!tvO.length)shuf();
 function tvShow(t,s){var c=$('tv');c.classList.add('f');setTimeout(function(){$('tvt').textContent=t;$('tvs').innerHTML=s;c.classList.remove('f')},180)}
-function tvLocal(){if(tvI>=tvO.length)shuf();var k=tvO[tvI++];ls('tv',JSON.stringify({o:tvO,i:tvI}));tvShow(TV[k],(tvI)+' / '+TV.length)}
+function tvLocal(){if(tvI>=tvO.length)shuf();var k=tvO[tvI++];ls('tv',JSON.stringify({o:tvO,i:tvI}));tvShow(TV[k],tvI+'/'+TV.length+' · stuknij ›')}
 function tvWiki(){
  var off=Math.random()*900|0;
  return fetch('https://pl.wikipedia.org/w/api.php?action=query&list=search&srsearch=Albania%20albański&srlimit=20&sroffset='+off+'&srnamespace=0&format=json&origin=*')
@@ -239,7 +240,7 @@ function tvWiki(){
   return fetch('https://pl.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(t))})
  .then(function(r){return r.json()}).then(function(p){var x=(p.extract||'').replace(/\s+/g,' ').trim();
   if(!/alba/i.test(x)||x.length<60)throw 0;
-  if(x.length>260){x=x.slice(0,260);x=x.slice(0,x.lastIndexOf(' '))+'…'}
+  if(x.length>170){x=x.slice(0,170);x=x.slice(0,x.lastIndexOf(' '))+'…'}
   tvShow(x,'Wikipedia · <a href="'+p.content_urls.mobile.page+'" target="_blank">'+p.title+'</a>')})}
 function tvNext(){if(tvBusy)return;tvN++;
  if(tvN%5===0&&navigator.onLine!==false){tvBusy=true;tvWiki().catch(tvLocal).then(function(){tvBusy=false});}
@@ -247,5 +248,10 @@ function tvNext(){if(tvBusy)return;tvN++;
 $('tv').addEventListener('click',function(e){if(e.target.tagName==='A')return;haptic();tvNext()});
 setInterval(function(){if(!document.hidden)tvNext()},25000);
 tvLocal();
+// iOS standalone + black-translucent: inset:0/100% kończy się nad dolną krawędzią ekranu. Liczymy wysokość sami.
+function fitH(){var st=navigator.standalone,p=innerHeight>=innerWidth;
+ var h=st?(p?Math.max(screen.height,screen.width):Math.min(screen.height,screen.width)):innerHeight;
+ document.documentElement.style.setProperty('--h',h+'px')}
+fitH();addEventListener('resize',fitH);addEventListener('orientationchange',function(){setTimeout(fitH,300)});
 render();load();
 </script></body></html>
