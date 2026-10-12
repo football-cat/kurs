@@ -49,6 +49,12 @@ h1{font-size:34px;font-weight:700;letter-spacing:.01em}
 .sw .t{flex:1}.sw .t small{display:block;font-size:13px;color:var(--sec)}
 .sw input{accent-color:#34c759;transform:scale(1.15);transform-origin:right}
 .warn{color:var(--org)}
+.tv{margin-top:22px;background:var(--card);border-radius:12px;padding:14px 16px 12px;transition:opacity .25s}
+.tv.f{opacity:0}
+.tv h2{font-size:13px;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.02em;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.tv p{font-size:15px;line-height:1.4}
+.tv .m{display:flex;justify-content:space-between;margin-top:10px;font-size:12px;color:var(--sec)}
+.tv a{color:var(--acc);text-decoration:none}
 .kp{flex:none;background:var(--keyfn);padding:8px 6px calc(env(safe-area-inset-bottom) + 6px);
  display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
 @media (prefers-color-scheme:dark){.kp{background:#151517}}
@@ -74,6 +80,7 @@ h1{font-size:34px;font-weight:700;letter-spacing:.01em}
  <div class="hdr">Opcje</div>
  <div class="grp"><label class="sw"><span class="t">Ściemokurs<small>100 ALL = 1 EUR</small></span><input type="checkbox" switch id="scam"></label></div>
  <div class="ft" id="src"></div>
+ <div class="tv" id="tv"><h2>🇦🇱 Czy wiesz, że…</h2><p id="tvt"></p><div class="m"><span id="tvs"></span><span>Stuknij › następna</span></div></div>
 </div>
 <div class="kp" id="kp">
  <button>1</button><button>2</button><button>3</button><button class="fn" data-k="C">C</button>
@@ -147,5 +154,98 @@ $('scam').addEventListener('change',function(){scam=this.checked;ls('scam',scam?
 $('ref').addEventListener('click',function(){haptic();load()});
 document.addEventListener('visibilitychange',function(){if(!document.hidden&&R.t&&Date.now()/1000-R.t>6*3600)load()});
 document.addEventListener('gesturestart',function(e){e.preventDefault()});
+// Ciekawostki: ręcznie zebrana pula (tasowana bez powtórzeń) + co 5. karta losowy fragment z polskiej Wikipedii.
+var TV=[
+'Albańczycy nazywają swój kraj Shqipëria, co tradycyjnie tłumaczy się jako „kraj orłów”. Stąd dwugłowy orzeł na fladze.',
+'Wielu Albańczyków kiwa głową w górę i w dół na „nie”, a kręci na boki na „tak”. Łatwo o nieporozumienie przy zamawianiu.',
+'Ceny często podaje się w „starych lekach”, czyli ×10. Lek zdenominowano w 1965 r., ale nawyk liczenia po staremu przetrwał.',
+'Nazwa waluty „lek” pochodzi od Aleksandra Wielkiego: Leka to albańskie zdrobnienie imienia Aleksander.',
+'W turystycznych miejscach euro często przyjmuje się po zaokrąglonym kursie 100 lek. Stąd ściemokurs.',
+'Za rządów Envera Hoxhy zbudowano ponad 170 tysięcy betonowych bunkrów, mniej więcej jeden na kilkunastu mieszkańców.',
+'W 1967 r. Albania ogłosiła się pierwszym oficjalnie ateistycznym państwem na świecie. Religię zalegalizowano ponownie w 1990 r.',
+'Enver Hoxha rządził Albanią od 1944 do śmierci w 1985 r. Zerwał po kolei z Jugosławią, ZSRR (1961) i Chinami (1978).',
+'Do 1991 r. prywatne samochody były w Albanii praktycznie zakazane. Dziś po drogach jeździ zaskakująco dużo Mercedesów.',
+'Język albański tworzy osobną, jednoelementową gałąź języków indoeuropejskich. Nie ma bliskich krewnych.',
+'Alfabet albański ma 36 liter, w tym dwuznaki takie jak dh, gj, ll, nj, rr, sh, th, xh i zh.',
+'Albański ma dwa główne dialekty: gegijski na północy i toskijski na południu. Język standardowy opiera się głównie na toskijskim.',
+'„Tungjatjeta” (dzień dobry) znaczy dosłownie mniej więcej „niech ci się życie wydłuży”.',
+'„Faleminderit” to dziękuję, „Mirupafshim” do widzenia, a „Gëzuar!” na zdrowie.',
+'Skanderbeg (Gjergj Kastrioti) przez ok. 25 lat skutecznie odpierał Turków osmańskich. Jest bohaterem narodowym.',
+'Hełm Skanderbega ozdobiony głową kozła znajduje się w Wiedniu, w zbiorach Kunsthistorisches Museum.',
+'28 listopada to podwójne święto: w 1443 r. Skanderbeg wywiesił flagę w Kruji, a w 1912 r. we Wlorze ogłoszono niepodległość.',
+'Niepodległość w 1912 r. proklamował we Wlorze Ismail Qemali.',
+'Tirana jest stolicą dopiero od 1920 r. Zdecydował o tym kongres w Lushnji.',
+'Ahmed Zogu w 1928 r. ogłosił się królem Zogiem I. Jego panowanie zakończyła włoska inwazja w 1939 r.',
+'Matka Teresa (Anjezë Gonxhe Bojaxhiu) była Albanką, urodzoną w Skopje. Lotnisko w Tiranie nosi jej imię.',
+'Albańskie korzenie mają m.in. Dua Lipa, Rita Ora, Bebe Rexha i John Belushi.',
+'Etnicznych Albańczyków więcej żyje poza Albanią (Kosowo, Macedonia Płn., Włochy, Grecja, diaspora) niż w samym kraju.',
+'Arbëreshë to Albańczycy osiedleni w południowych Włoszech od XV wieku. Do dziś mówią archaiczną odmianą albańskiego.',
+'Besa to albańskie słowo honoru. W czasie II wojny Albańczycy ukrywali Żydów i po wojnie było ich w kraju więcej niż przed nią.',
+'Kanun Leki Dukagjiniego to średniowieczne prawo zwyczajowe północnej Albanii, regulujące m.in. gościnność i krwawą zemstę.',
+'Burrneshë, czyli „zaprzysiężone dziewice”, to kobiety z północnej Albanii, które przysięgały celibat i żyły jako mężczyźni z pełnią ich praw.',
+'Albania leży nad dwoma morzami: Adriatykiem na północy i Morzem Jońskim na południu. Granica wód przebiega w okolicy Wlory.',
+'Najwyższy szczyt Albanii to Korab (2764 m) na granicy z Macedonią Północną.',
+'Jezioro Szkoderskie, dzielone z Czarnogórą, jest największym jeziorem na Bałkanach.',
+'Jezioro Ochrydzkie, dzielone z Macedonią Płn., to jedno z najstarszych jezior Europy. Ma ponad milion lat.',
+'Vjosa to jedna z ostatnich dzikich, nieuregulowanych rzek Europy. W 2023 r. utworzono Park Narodowy Dzikiej Rzeki Vjosy.',
+'Syri i Kaltër (Niebieskie Oko) to krasowe źródło o intensywnie niebieskiej wodzie. Nurkom nie udało się zbadać jego dna.',
+'Góry na północy nazywają się Bjeshkët e Nemuna, czyli Góry Przeklęte. Szlak Theth–Valbona to klasyk trekkingu.',
+'Przełęcz Llogara (ok. 1000 m n.p.m.) łączy zatokę Wlory z Riwierą Albańską. Widok na zjazd jest jednym z najlepszych w kraju.',
+'Saranda wzięła nazwę od bizantyjskiego klasztoru Czterdziestu Świętych (gr. Agioi Saranta).',
+'Z plaż Ksamilu widać grecką wyspę Korfu, oddaloną o kilka kilometrów.',
+'Butrint, starożytne miasto greckie, rzymskie i bizantyjskie przy granicy z Grecją, jest na liście UNESCO.',
+'Berat nazywa się „miastem tysiąca okien” od białych osmańskich domów na zboczu. Razem z Gjirokastrą jest na liście UNESCO.',
+'Gjirokastra to „kamienne miasto”. Urodzili się tu zarówno Enver Hoxha, jak i pisarz Ismail Kadare.',
+'Ismail Kadare, najsłynniejszy albański pisarz, otrzymał w 2005 r. pierwszą Międzynarodową Nagrodę Bookera.',
+'Durrës (starożytne Epidamnos/Dyrrachium) założono ok. 627 r. p.n.e. Ma jeden z największych amfiteatrów rzymskich na Bałkanach.',
+'W Dyrrachium (Durrës) zaczynała się Via Egnatia, rzymska droga prowadząca aż do Konstantynopola.',
+'W Apolonii pod Fierem młody Oktawian, późniejszy cesarz August, pobierał nauki, gdy dowiedział się o śmierci Cezara.',
+'Teuta, iliryjska królowa z III w. p.n.e., toczyła wojnę z Rzymem o piractwo na Adriatyku.',
+'Nazwa „Albania” wywodzi się prawdopodobnie od iliryjskiego plemienia Albanoi, wspomnianego przez Ptolemeusza.',
+'Według legendy w murach zamku Rozafa w Szkodrze zamurowano żywcem młodą kobietę, by mury przestały się walić.',
+'Szkodra słynie z rowerów. To jedno z najbardziej „rowerowych” miast na Bałkanach.',
+'W Kruji, dawnej twierdzy Skanderbega, jest jego muzeum i stary bazar osmański.',
+'Jako burmistrz Tirany Edi Rama, z wykształcenia malarz, kazał pomalować szare bloki na jaskrawe kolory.',
+'Piramidę w Tiranie zbudowano w 1988 r. jako muzeum Hoxhy. Po renowacji działa w niej centrum technologiczne, a na dach można wejść schodami.',
+'Bunk’Art 1 i 2 to muzea w dawnych schronach atomowych w Tiranie, w tym w bunkrze przeznaczonym dla Hoxhy.',
+'W zatoce Wlory, na wyspie Sazan i w Pasha Liman, mieściła się kiedyś sowiecka baza okrętów podwodnych.',
+'Lord Byron odwiedził Albanię w 1809 r. i opisał ją w „Wędrówkach Childe Harolda”. Gościł u Alego Paszy z Tepeleny.',
+'Xhiro to wieczorny rytuał spaceru głównym deptakiem miasta. Chodzi o to, żeby zobaczyć innych i pokazać się.',
+'Albania ma podobno jedną z największych liczb kawiarni na mieszkańca na świecie.',
+'Raki to albańska wódka owocowa, najczęściej z winogron. Gospodarz chętnie poczęstuje nią już przed południem.',
+'Tavë kosi, zapiekana jagnięcina z ryżem w sosie jogurtowo-jajecznym, uchodzi za danie narodowe.',
+'Byrek, ciasto filo z serem, szpinakiem lub mięsem, to najpopularniejsze szybkie śniadanie w kraju.',
+'Albania jest jednym z czołowych eksporterów ziół leczniczych, m.in. szałwii.',
+'Albańskie polifoniczne śpiewy izo są wpisane na listę niematerialnego dziedzictwa UNESCO.',
+'Xhubleta, tradycyjna dzwonowata spódnica góralek z północy, trafiła w 2022 r. na listę pilnej ochrony UNESCO.',
+'Albania należy do NATO od 2009 r., a od 2022 r. prowadzi negocjacje akcesyjne z UE.',
+'Według spisu z 2023 r. Albania ma ok. 2,4 mln mieszkańców, wyraźnie mniej niż na początku XXI wieku.',
+'Kierunkowy Albanii to +355, a domena internetowa to .al.',
+'Za Hoxhy cudzoziemców z długimi włosami lub brodą potrafiono zawracać na granicy albo kazać im się ostrzyc.',
+'Hymn Albanii to „Himni i Flamurit”, czyli Hymn do Flagi.',
+'Wlora to miasto, w którym w 1912 r. ogłoszono niepodległość. Stoi tam Pomnik Niepodległości.'
+];
+var tvO=[],tvI=0,tvN=0,tvBusy=false;
+function shuf(){tvO=TV.map(function(_,i){return i});for(var i=tvO.length-1;i>0;i--){var j=Math.random()*(i+1)|0,t=tvO[i];tvO[i]=tvO[j];tvO[j]=t}tvI=0}
+try{var st=JSON.parse(ls('tv'));if(st&&st.o&&st.o.length===TV.length){tvO=st.o;tvI=st.i}}catch(e){}
+if(!tvO.length)shuf();
+function tvShow(t,s){var c=$('tv');c.classList.add('f');setTimeout(function(){$('tvt').textContent=t;$('tvs').innerHTML=s;c.classList.remove('f')},180)}
+function tvLocal(){if(tvI>=tvO.length)shuf();var k=tvO[tvI++];ls('tv',JSON.stringify({o:tvO,i:tvI}));tvShow(TV[k],(tvI)+' / '+TV.length)}
+function tvWiki(){
+ var off=Math.random()*900|0;
+ return fetch('https://pl.wikipedia.org/w/api.php?action=query&list=search&srsearch=Albania%20albański&srlimit=20&sroffset='+off+'&srnamespace=0&format=json&origin=*')
+ .then(function(r){return r.json()}).then(function(j){var a=j.query.search;if(!a.length)throw 0;
+  var t=a[Math.random()*a.length|0].title;
+  return fetch('https://pl.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(t))})
+ .then(function(r){return r.json()}).then(function(p){var x=(p.extract||'').replace(/\s+/g,' ').trim();
+  if(!/alba/i.test(x)||x.length<60)throw 0;
+  if(x.length>260){x=x.slice(0,260);x=x.slice(0,x.lastIndexOf(' '))+'…'}
+  tvShow(x,'Wikipedia · <a href="'+p.content_urls.mobile.page+'" target="_blank">'+p.title+'</a>')})}
+function tvNext(){if(tvBusy)return;tvN++;
+ if(tvN%5===0&&navigator.onLine!==false){tvBusy=true;tvWiki().catch(tvLocal).then(function(){tvBusy=false});}
+ else tvLocal()}
+$('tv').addEventListener('click',function(e){if(e.target.tagName==='A')return;haptic();tvNext()});
+setInterval(function(){if(!document.hidden)tvNext()},25000);
+tvLocal();
 render();load();
 </script></body></html>
