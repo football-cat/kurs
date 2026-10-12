@@ -20,7 +20,12 @@
 }}
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 html,body{height:100%;overflow:hidden;overscroll-behavior:none}
-body{position:fixed;top:0;left:0;right:0;height:var(--h,100dvh);display:flex;flex-direction:column;background:var(--bg);color:var(--fg);
+/* Tło płótna = tło klawiatury: pas, którego iOS nie oddaje stronie pod paskiem Home, wygląda jak przedłużenie klawiatury. */
+html{background:var(--kpbg)}
+:root{--kpbg:#d1d3d9}
+@media (prefers-color-scheme:dark){:root{--kpbg:#151517}}
+.gap .kp{padding-bottom:6px}
+body{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--bg);color:var(--fg);
  font:17px/1.3 -apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;touch-action:manipulation;
  padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left)}
 body.scam{--acc:var(--org)}
@@ -49,22 +54,23 @@ h1{font-size:34px;font-weight:700;letter-spacing:.01em}
 .sw .t{flex:1}.sw .t small{display:block;font-size:13px;color:var(--sec)}
 .sw input{accent-color:#34c759;transform:scale(1.15);transform-origin:right}
 .warn{color:var(--org)}
-.tvw{flex:none;padding:0 16px 8px;max-width:520px;width:100%;margin:0 auto}
+.tvw{flex:none;padding:8px 16px 8px;max-width:520px;width:100%;margin:0 auto}
 .tv{background:var(--card);border-radius:12px;padding:10px 14px 11px;transition:opacity .25s;min-height:96px}
 .tv.f{opacity:0}
 .tv h2{font-size:12px;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.02em;margin-bottom:4px;display:flex;align-items:center;gap:6px}
 .tv h2 span{margin-left:auto;font-weight:400;text-transform:none;color:var(--sec);letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:55%}
 .tv p{font-size:14px;line-height:1.38;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .tv a{color:var(--acc);text-decoration:none}
-.kp{flex:none;background:var(--keyfn);padding:8px 6px calc(env(safe-area-inset-bottom) + 6px);
+.kp{flex:none;background:var(--kpbg);padding:8px 6px calc(env(safe-area-inset-bottom) + 6px);
  display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
-@media (prefers-color-scheme:dark){.kp{background:#151517}}
 .kp button{border:0;border-radius:8px;background:var(--key);color:var(--fg);box-shadow:var(--sh);
  height:min(54px,7.2vh);font:400 26px -apple-system,system-ui;display:grid;place-items:center}
-.kp button.fn{background:var(--keyfn);font-size:20px}
-@media (prefers-color-scheme:dark){.kp button.fn{background:#3a3a3c}}
+.kp button.fn{background:var(--fnk);font-size:20px}
+:root{--fnk:#bcc0c7;--kpp:#aeb2ba}
+@media (prefers-color-scheme:dark){:root{--kpp:#5a5a5e}}
+@media (prefers-color-scheme:dark){:root{--fnk:#3a3a3c}}
 .kp button.z{grid-column:span 2}
-.kp button.p{background:var(--keyp)}
+.kp button.p{background:var(--kpp)}
 .kp svg{width:26px;height:26px}
 #hp{position:absolute;left:-99px;opacity:0;pointer-events:none}
 </style></head><body>
@@ -78,9 +84,9 @@ h1{font-size:34px;font-weight:700;letter-spacing:.01em}
   <div class="row" data-c="EUR"><div class="flag">🇪🇺</div><div class="nm"><b>EUR</b><small>Euro</small></div><div class="val" id="vEUR"></div></div>
  </div>
  <div class="ft" id="cross"></div>
+ <div class="ft" id="src" style="padding-top:2px"></div>
  <div class="hdr">Opcje</div>
  <div class="grp"><label class="sw"><span class="t">Ściemokurs<small>100 ALL = 1 EUR</small></span><input type="checkbox" switch id="scam"></label></div>
- <div class="ft" id="src"></div>
 </div>
 <div class="tvw"><div class="tv" id="tv"><h2>🇦🇱 Czy wiesz, że…<span id="tvs"></span></h2><p id="tvt"></p></div></div>
 <div class="kp" id="kp">
@@ -248,10 +254,11 @@ function tvNext(){if(tvBusy)return;tvN++;
 $('tv').addEventListener('click',function(e){if(e.target.tagName==='A')return;haptic();tvNext()});
 setInterval(function(){if(!document.hidden)tvNext()},25000);
 tvLocal();
-// iOS standalone + black-translucent: inset:0/100% kończy się nad dolną krawędzią ekranu. Liczymy wysokość sami.
-function fitH(){var st=navigator.standalone,p=innerHeight>=innerWidth;
- var h=st?(p?Math.max(screen.height,screen.width):Math.min(screen.height,screen.width)):innerHeight;
- document.documentElement.style.setProperty('--h',h+'px')}
+// iOS 26 (apka z ekranu początkowego): strona kończy się nad paskiem Home, a env(safe-area-inset-bottom) i tak zwraca ~34px.
+// Wtedy zdejmujemy dolny margines klawiatury, żeby nie było podwójnej przerwy.
+function fitH(){var r=document.documentElement,st=navigator.standalone,
+ full=Math.max(screen.height,screen.width),p=innerHeight>=innerWidth;
+ r.classList.toggle('gap',!!(st&&p&&full-innerHeight>20))}
 fitH();addEventListener('resize',fitH);addEventListener('orientationchange',function(){setTimeout(fitH,300)});
 render();load();
 </script></body></html>
