@@ -11,93 +11,135 @@
 <title>Kurs</title>
 <style>
 :root{
- --bg:#f2f2f7;--card:#fff;--fg:#000;--sec:#3c3c4399;--sep:#3c3c434a;--acc:#007aff;--org:#ff9500;
- --key:#fff;--keyp:#d1d1d6;--keyfn:#e5e5ea;--sh:0 1px 0 #0000002e;
+ --bg:#f2f2f7;--fg:#000;--sec:rgba(60,60,67,.6);--ter:rgba(60,60,67,.28);--sep:rgba(60,60,67,.18);
+ --acc:#007aff;--org:#ff9500;--ok:#34c759;
+ --gl:rgba(255,255,255,.66);--glb:rgba(255,255,255,.9);--glfn:rgba(214,214,222,.6);--hi:rgba(255,255,255,.95);
+ --seg:rgba(118,118,128,.12);--thumb:#fff;--shk:0 10px 22px -14px rgba(0,0,0,.35);
+ --red:rgba(228,30,32,.22);--blu:rgba(0,122,255,.10);--o1:rgba(255,149,0,.30);--o2:rgba(255,59,48,.12);
+ --sys:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",system-ui,sans-serif;
+ --disp:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",system-ui,sans-serif;
 }
 @media (prefers-color-scheme:dark){:root{
- --bg:#000;--card:#1c1c1e;--fg:#fff;--sec:#ebebf599;--sep:#54545899;--acc:#0a84ff;--org:#ff9f0a;
- --key:#2c2c2e;--keyp:#48484a;--keyfn:#1c1c1e;--sh:none;
+ --bg:#000;--fg:#fff;--sec:rgba(235,235,245,.6);--ter:rgba(235,235,245,.28);--sep:rgba(84,84,88,.6);
+ --acc:#0a84ff;--org:#ff9f0a;--ok:#30d158;
+ --gl:rgba(255,255,255,.10);--glb:rgba(255,255,255,.13);--glfn:rgba(255,255,255,.2);--hi:rgba(255,255,255,.16);
+ --seg:rgba(118,118,128,.24);--thumb:#636366;--shk:none;
+ --red:rgba(228,30,32,.34);--blu:rgba(10,132,255,.14);--o1:rgba(255,159,10,.34);--o2:rgba(255,69,58,.16);
 }}
-*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+html{background:var(--bg)}
 html,body{height:100%;overflow:hidden;overscroll-behavior:none}
-/* Tło płótna = tło klawiatury: pas, którego iOS nie oddaje stronie pod paskiem Home, wygląda jak przedłużenie klawiatury. */
-html{background:var(--kpbg)}
-:root{--kpbg:#d1d3d9}
-@media (prefers-color-scheme:dark){:root{--kpbg:#151517}}
-.gap .kp{padding-bottom:6px}
-body{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--bg);color:var(--fg);
- font:17px/1.3 -apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;touch-action:manipulation;
- padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left)}
+body{position:fixed;inset:0;display:flex;flex-direction:column;color:var(--fg);font:17px/1.3 var(--sys);
+ touch-action:manipulation;padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);-webkit-font-smoothing:antialiased}
 body.scam{--acc:var(--org)}
-.wrap{flex:1;min-height:0;overflow:auto;padding:0 16px 8px;max-width:520px;width:100%;margin:0 auto}
-nav{display:flex;align-items:flex-end;justify-content:space-between;padding:10px 4px 10px}
-h1{font-size:34px;font-weight:700;letter-spacing:.01em}
-.ib{width:36px;height:36px;border-radius:50%;border:0;background:var(--card);color:var(--acc);display:grid;place-items:center;margin-bottom:4px}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+
+/* Tło: miękka poświata w kolorze flagi; w trybie ściemy przechodzi w pomarańcz */
+.amb{position:fixed;inset:0;pointer-events:none}
+.amb i{position:absolute;inset:0;transition:opacity .7s ease}
+.amb .r{background:radial-gradient(110% 55% at 0% 0%,var(--red),transparent 62%),radial-gradient(80% 45% at 100% 18%,var(--blu),transparent 60%)}
+.amb .o{opacity:0;background:radial-gradient(110% 55% at 0% 0%,var(--o1),transparent 62%),radial-gradient(80% 45% at 100% 18%,var(--o2),transparent 60%)}
+body.scam .amb .r{opacity:0}body.scam .amb .o{opacity:1}
+
+.app{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;max-width:520px;width:100%;margin:0 auto}
+.glass{background:var(--gl);border:.5px solid var(--glb);-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);
+ box-shadow:inset 0 1px 0 var(--hi),var(--shk)}
+
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 16px 6px}
+.seg{position:relative;display:grid;grid-template-columns:1fr 1fr;width:236px;height:36px;padding:2px;border-radius:18px;background:var(--seg)}
+.seg button{position:relative;z-index:1;font-size:14px;font-weight:500;border-radius:16px;transition:color .25s}
+.seg button[aria-selected=true]{font-weight:600}
+.seg .th{position:absolute;top:2px;bottom:2px;left:2px;width:calc(50% - 2px);border-radius:16px;background:var(--thumb);
+ box-shadow:0 3px 8px rgba(0,0,0,.12),0 3px 1px rgba(0,0,0,.04);transition:transform .38s cubic-bezier(.3,1.25,.5,1)}
+body.scam .seg .th{transform:translateX(100%)}
+body.scam .seg button[data-m="1"]{color:var(--org)}
+.ib{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--acc)}
 .ib svg{width:20px;height:20px}
 .ib.spin svg{animation:sp .8s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
-.grp{background:var(--card);border-radius:12px;overflow:hidden}
-.row{display:flex;align-items:center;gap:12px;padding:0 16px;min-height:66px;position:relative;transition:background .15s}
-.row+.row::before{content:"";position:absolute;top:0;left:64px;right:0;height:.5px;background:var(--sep)}
-.row:active{background:var(--keyfn)}
-.flag{width:36px;height:36px;border-radius:50%;background:var(--bg);display:grid;place-items:center;font-size:22px;flex:none}
-.nm{flex:none}.nm b{display:block;font-size:17px;font-weight:600}.nm small{font-size:13px;color:var(--sec)}
-.val{flex:1;min-width:0;text-align:right;font-size:28px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.01em}
-.val.sm{font-size:22px}.val.xs{font-size:18px}
-.row.on .val{color:var(--acc)}
-.row.on .val::after{content:"";display:inline-block;width:2px;height:.95em;background:var(--acc);margin-left:2px;vertical-align:-.12em;animation:bl 1s steps(1) infinite}
-@keyframes bl{50%{opacity:0}}
-.ph{color:var(--sec)}
-.hdr{font-size:13px;color:var(--sec);text-transform:uppercase;padding:16px 16px 7px}
-.ft{font-size:13px;color:var(--sec);padding:7px 16px 0;line-height:1.45}
-.ft b{font-weight:500;color:var(--fg)}
-.sw{display:flex;align-items:center;min-height:52px;padding:0 16px;gap:12px}
-.sw .t{flex:1}.sw .t small{display:block;font-size:13px;color:var(--sec)}
-.sw input{accent-color:#34c759;transform:scale(1.15);transform-origin:right}
-.warn{color:var(--org)}
-.tvw{flex:none;padding:8px 16px 8px;max-width:520px;width:100%;margin:0 auto}
-.tv{background:var(--card);border-radius:12px;padding:10px 14px 11px;transition:opacity .25s;min-height:96px}
+
+.disp{padding:6px 20px 0}
+.cur{display:flex;align-items:baseline;gap:12px;min-height:50px;padding:4px 0;border-top:.5px solid var(--sep);transition:transform .18s}
+.cur:first-child{border-top:0}
+.cur.hold{transform:scale(.97)}
+.lab{flex:none;display:flex;align-items:center;gap:7px;font-size:15px;font-weight:600;color:var(--sec);transition:color .25s}
+.lab .fl{font-size:19px;line-height:1}
+.num{flex:1;min-width:0;text-align:right;white-space:nowrap;overflow:hidden;font-family:var(--disp);font-variant-numeric:tabular-nums;
+ font-size:32px;font-weight:400;letter-spacing:-.01em;line-height:1.2}
+.cur.on{padding:2px 0 6px}
+.cur.on .lab{color:var(--acc)}
+.cur.on .num{font-weight:200;font-size:66px;letter-spacing:-.035em;line-height:1.1;animation:pop .3s cubic-bezier(.3,1.3,.5,1)}
+@keyframes pop{from{opacity:.35;transform:translateY(6px)}}
+.num.ph{color:var(--ter)}
+
+.meta{padding:12px 20px 0;font-size:13px;line-height:1.5;color:var(--sec)}
+.meta b{font-weight:500;color:var(--fg)}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ok);margin-right:7px;vertical-align:1px}
+.dot.old{background:var(--org)}
+.meta .w{color:var(--org)}
+.sp{flex:1;min-height:8px}
+
+.tv{margin:0 16px 12px;padding:11px 15px 12px;border-radius:22px;transition:opacity .22s}
 .tv.f{opacity:0}
-.tv h2{font-size:12px;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.02em;margin-bottom:4px;display:flex;align-items:center;gap:6px}
-.tv h2 span{margin-left:auto;font-weight:400;text-transform:none;color:var(--sec);letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:55%}
-.tv p{font-size:14px;line-height:1.38;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.tvh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:13px;font-weight:600;color:var(--acc);margin-bottom:3px}
+.tvh span:last-child{font-weight:400;color:var(--ter);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:55%}
+.tv p{font-size:14px;line-height:1.4;height:calc(3 * 1.4em);overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
 .tv a{color:var(--acc);text-decoration:none}
-.kp{flex:none;background:var(--kpbg);padding:8px 6px calc(env(safe-area-inset-bottom) + 6px);
- display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
-.kp button{border:0;border-radius:8px;background:var(--key);color:var(--fg);box-shadow:var(--sh);
- height:min(54px,7.2vh);font:400 26px -apple-system,system-ui;display:grid;place-items:center}
-.kp button.fn{background:var(--fnk);font-size:20px}
-:root{--fnk:#bcc0c7;--kpp:#aeb2ba}
-@media (prefers-color-scheme:dark){:root{--kpp:#5a5a5e}}
-@media (prefers-color-scheme:dark){:root{--fnk:#3a3a3c}}
-.kp button.z{grid-column:span 2}
-.kp button.p{background:var(--kpp)}
-.kp svg{width:26px;height:26px}
+
+.kp{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 12px;padding:2px 16px calc(env(safe-area-inset-bottom) + 8px)}
+.gap .kp{padding-bottom:10px}
+.kp button{height:min(64px,8.3dvh);border-radius:999px;font-family:var(--disp);font-size:30px;font-weight:400;display:grid;place-items:center;
+ transition:transform .2s cubic-bezier(.3,1.5,.5,1),filter .2s}
+.kp button.p{transform:scale(.92);filter:brightness(.88)}
+@media (prefers-color-scheme:dark){.kp button.p{filter:brightness(1.6)}}
+.kp .fn{background:var(--glfn);font-size:22px}
+.kp .ac{background:var(--acc);border-color:transparent;color:#fff;box-shadow:0 10px 20px -12px var(--acc)}
+.kp .z{grid-column:span 2}
+.kp .k3{font-size:25px;letter-spacing:.04em}
+.kp svg{width:25px;height:25px}
+
+.toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 10px);z-index:9;padding:10px 18px;border-radius:999px;font-size:15px;font-weight:500;
+ opacity:0;transform:translate(-50%,-14px) scale(.96);transition:opacity .25s,transform .35s cubic-bezier(.3,1.3,.5,1);pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,0) scale(1)}
 #hp{position:absolute;left:-99px;opacity:0;pointer-events:none}
+@media (max-height:700px){.cur{min-height:44px}.cur .num{font-size:28px}.meta{padding-top:8px}.tv{margin-bottom:10px;padding:9px 14px 10px}.tv p{height:calc(2 * 1.4em);-webkit-line-clamp:2}.kp{gap:8px 12px}.kp button{height:min(56px,7.6dvh)}header{padding-top:4px}}
+@media (max-height:600px){.tv{display:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 </style></head><body>
-<div class="wrap">
- <nav><h1>Kurs</h1>
-  <button class="ib" id="ref" aria-label="Odśwież kurs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg></button>
- </nav>
- <div class="grp" id="list">
-  <div class="row" data-c="ALL"><div class="flag">🇦🇱</div><div class="nm"><b>ALL</b><small>Lek albański</small></div><div class="val" id="vALL"></div></div>
-  <div class="row" data-c="PLN"><div class="flag">🇵🇱</div><div class="nm"><b>PLN</b><small>Złoty</small></div><div class="val" id="vPLN"></div></div>
-  <div class="row" data-c="EUR"><div class="flag">🇪🇺</div><div class="nm"><b>EUR</b><small>Euro</small></div><div class="val" id="vEUR"></div></div>
+<div class="amb" aria-hidden="true"><i class="r"></i><i class="o"></i></div>
+<div class="app">
+ <header>
+  <div class="seg" role="tablist" aria-label="Kurs przeliczania">
+   <i class="th" aria-hidden="true"></i>
+   <button role="tab" data-m="0" aria-selected="true">Rynkowy</button>
+   <button role="tab" data-m="1" aria-selected="false">Ściemokurs</button>
+  </div>
+  <button class="ib glass" id="ref" aria-label="Odśwież kurs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg></button>
+ </header>
+
+ <section class="disp" aria-live="polite">
+  <div class="cur" data-c="ALL"><div class="lab"><span class="fl">🇦🇱</span>ALL</div><div class="num" id="vALL"></div></div>
+  <div class="cur" data-c="PLN"><div class="lab"><span class="fl">🇵🇱</span>PLN</div><div class="num" id="vPLN"></div></div>
+  <div class="cur" data-c="EUR"><div class="lab"><span class="fl">🇪🇺</span>EUR</div><div class="num" id="vEUR"></div></div>
+ </section>
+ <div class="meta"><div id="src"></div><div id="cross"></div></div>
+
+ <div class="sp"></div>
+ <div class="tv glass" id="tv" role="button" aria-label="Następna ciekawostka"><div class="tvh"><span>🇦🇱 Czy wiesz, że…</span><span id="tvs"></span></div><p id="tvt"></p></div>
+
+ <div class="kp" id="kp">
+  <button class="glass">1</button><button class="glass">2</button><button class="glass">3</button><button class="glass fn" data-k="C" aria-label="Wyczyść">C</button>
+  <button class="glass">4</button><button class="glass">5</button><button class="glass">6</button>
+  <button class="glass fn" data-k="B" aria-label="Usuń cyfrę"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M9 5h11a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H9l-6-7z"/><path d="m12 9.5 5 5m0-5-5 5"/></svg></button>
+  <button class="glass">7</button><button class="glass">8</button><button class="glass">9</button>
+  <button class="glass ac" data-k="N" aria-label="Następna waluta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4v16m0 0-4-4m4 4 4-4M17 20V4m0 0-4 4m4-4 4 4"/></svg></button>
+  <button class="glass z">0</button><button class="glass k3">000</button><button class="glass fn" data-k="," aria-label="Przecinek" style="font-size:30px">,</button>
  </div>
- <div class="ft" id="cross"></div>
- <div class="ft" id="src" style="padding-top:2px"></div>
- <div class="hdr">Opcje</div>
- <div class="grp"><label class="sw"><span class="t">Ściemokurs<small>100 ALL = 1 EUR</small></span><input type="checkbox" switch id="scam"></label></div>
 </div>
-<div class="tvw"><div class="tv" id="tv"><h2>🇦🇱 Czy wiesz, że…<span id="tvs"></span></h2><p id="tvt"></p></div></div>
-<div class="kp" id="kp">
- <button>1</button><button>2</button><button>3</button><button class="fn" data-k="C">C</button>
- <button>4</button><button>5</button><button>6</button><button class="fn" data-k="B" aria-label="Usuń"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M9 5h11a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H9l-6-7z"/><path d="m12 9.5 5 5m0-5-5 5"/></svg></button>
- <button>7</button><button>8</button><button>9</button><button class="fn" data-k="N" aria-label="Następna waluta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4v16m0 0-4-4m4 4 4-4M17 20V4m0 0-4 4m4-4 4 4"/></svg></button>
- <button class="z">0</button><button>000</button><button class="fn" data-k="," style="font-size:30px;padding-bottom:8px">,</button>
-</div>
+<div class="toast glass" id="toast" role="status"></div>
 <label id="hp"><input type="checkbox" switch></label>
 <script>
-var FB={EUR:1,PLN:4.25,ALL:97.0,t:0,s:'wbudowany (przybliżony)'};
+var FB={EUR:1,PLN:4.25,ALL:97.0,t:0,s:'wbudowany'};
 var R=FB,C=['ALL','PLN','EUR'],act='ALL',buf='',fresh=false,scam=false;
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
 try{var c=JSON.parse(ls('kurs'));if(c&&c.PLN&&c.ALL)R=c}catch(e){}
@@ -110,24 +152,28 @@ function showBuf(b){var p=b.split(',');return grp(p[0]||'0')+(p.length>1?','+p[1
 function fmt(v,c){var d=c==='ALL'?0:2;if(c!=='ALL'&&v!==0&&Math.abs(v)<1)d=4;
  return v.toLocaleString('pl-PL',{minimumFractionDigits:d,maximumFractionDigits:d})}
 function n(v,d){return v.toLocaleString('pl-PL',{maximumFractionDigits:d})}
-function size(el,t){el.className='val'+(t.length>13?' xs':t.length>10?' sm':'')}
+// Dopasowanie rozmiaru liczby do szerokości (jak wyświetlacz Kalkulatora).
+function fit(el,max,min){el.style.fontSize='';var s=max;el.style.fontSize=s+'px';
+ while(el.scrollWidth>el.clientWidth+1&&s>min){s-=2;el.style.fontSize=s+'px'}}
 function render(){
  var v=num(buf);
- C.forEach(function(c){var el=$('v'+c),t;
-  document.querySelector('.row[data-c='+c+']').classList.toggle('on',c===act);
-  if(c===act){t=buf?showBuf(buf):'0';el.textContent=t;size(el,t);if(!buf)el.classList.add('ph');return}
-  t=isNaN(v)?'0':fmt(v/K(act)*K(c),c);el.textContent=t;size(el,t);if(isNaN(v))el.classList.add('ph');
- });
- var A=K('ALL');
- $('cross').innerHTML=(scam?'<span class="warn">Ściemokurs aktywny · realnie 1 EUR = '+n(R.ALL,2)+' ALL</span><br>':'')+
-  '1 EUR = <b>'+n(A,2)+' ALL</b> = <b>'+n(R.PLN,4)+' PLN</b> · 1 PLN = <b>'+n(A/R.PLN,2)+' ALL</b><br>100 ALL = <b>'+n(100*R.PLN/A,2)+' PLN</b> = <b>'+n(100/A,2)+' EUR</b>';
- var t=R.t?new Date(R.t*1000).toLocaleString('pl-PL',{dateStyle:'short',timeStyle:'short'}):'';
+ C.forEach(function(c){var el=$('v'+c),row=el.parentNode,on=c===act;
+  row.classList.toggle('on',on);
+  if(on){el.textContent=buf?showBuf(buf):'0';el.classList.toggle('ph',!buf)}
+  else{el.textContent=isNaN(v)?'0':fmt(v/K(act)*K(c),c);el.classList.toggle('ph',isNaN(v))}
+  var sm=innerHeight<700;fit(el,on?(sm?54:66):(sm?28:32),on?30:18)});
+ var t=R.t?new Date(R.t*1000).toLocaleString('pl-PL',{day:'numeric',month:'numeric',hour:'2-digit',minute:'2-digit'}):'';
  var old=!R.t||(Date.now()/1000-R.t>3*86400);
- $('src').innerHTML='<span class="'+(old?'warn':'')+'">Kurs '+R.s+(t?', '+t:'')+'</span>';
+ $('src').innerHTML='<span class="dot'+(old?' old':'')+'"></span>'+(R.t?'Kurs z '+t:'Kurs przybliżony, brak połączenia');
+ var A=K('ALL');
+ $('cross').innerHTML=(scam?'<span class="w">Ściemokurs: 100 ALL za 1 EUR, rynkowo '+n(R.ALL,2)+'</span><br>':'')+
+  '1 EUR = <b>'+n(A,2)+' ALL</b> = <b>'+n(R.PLN,4)+' PLN</b>, 1 PLN = <b>'+n(A/R.PLN,2)+' ALL</b>';
  document.body.classList.toggle('scam',scam);
+ document.querySelectorAll('.seg button').forEach(function(b){b.setAttribute('aria-selected',String((b.dataset.m==='1')===scam))});
  ls('buf',buf);ls('act',act);
 }
 function haptic(){try{$('hp').click()}catch(e){}}
+function toast(t){var e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(function(){e.classList.remove('on')},1500)}
 // Zmiana waluty bazowej: przeliczona wartość staje się buforem, następna cyfra ją zastępuje.
 function select(c){if(c===act)return;var v=num(buf);
  buf=isNaN(v)?'':fmt(v/K(act)*K(c),c).replace(/ |\s/g,'');
@@ -140,7 +186,7 @@ function key(k){haptic();
  else{if(fresh){buf='';fresh=false}
   if(k===','){if(act==='ALL'||buf.indexOf(',')>=0)return;buf=(buf||'0')+','}
   else{var p=buf.split(',');if(p[1]!==undefined&&p[1].length+k.length>2)return;
-   if(p[0].length+k.length>12&&p[1]===undefined)return;
+   if(p[1]===undefined&&p[0].length+k.length>12)return;
    buf=(buf==='0'?'':buf)+k;if(/^0+$/.test(buf))buf='0'}}
  render()}
 function load(){$('ref').classList.add('spin');
@@ -150,18 +196,27 @@ function load(){$('ref').classList.add('spin');
   if(j.result!=='success'||!j.rates.PLN||!j.rates.ALL)throw 0;
   R={EUR:1,PLN:j.rates.PLN,ALL:j.rates.ALL,t:j.time_last_update_unix,s:'online'};ls('kurs',JSON.stringify(R))})
  .catch(function(){}).then(function(){clearTimeout(to);$('ref').classList.remove('spin');render()})}
+
 document.querySelectorAll('.kp button').forEach(function(b){
- b.addEventListener('touchstart',function(){b.classList.add('p')},{passive:true});
- b.addEventListener('touchend',function(){b.classList.remove('p')});
- b.addEventListener('touchcancel',function(){b.classList.remove('p')});
+ b.addEventListener('pointerdown',function(){b.classList.add('p')});
+ ['pointerup','pointercancel','pointerleave'].forEach(function(e){b.addEventListener(e,function(){b.classList.remove('p')})});
  b.addEventListener('click',function(){key(b.dataset.k||b.textContent)})});
-document.querySelectorAll('.row').forEach(function(r){r.addEventListener('click',function(){haptic();select(r.dataset.c)})});
-$('scam').checked=scam;
-$('scam').addEventListener('change',function(){scam=this.checked;ls('scam',scam?'1':'0');render()});
+// Wiersz waluty: stuknięcie = licz od tej waluty, przytrzymanie = kopiuj kwotę.
+document.querySelectorAll('.cur').forEach(function(r){var t0=0,tm,long=false;
+ r.addEventListener('pointerdown',function(){t0=Date.now();long=false;tm=setTimeout(function(){r.classList.add('hold');haptic()},420)});
+ r.addEventListener('pointerup',function(){clearTimeout(tm);r.classList.remove('hold');
+  if(Date.now()-t0>=420){long=true;var txt=r.querySelector('.num').textContent.replace(/ /g,' ');
+   var p=navigator.clipboard&&navigator.clipboard.writeText(txt.replace(/ /g,''));
+   if(p)p.then(function(){toast('Skopiowano '+txt+' '+r.dataset.c)},function(){toast('Nie udało się skopiować')});else toast('Nie udało się skopiować')}});
+ r.addEventListener('pointercancel',function(){clearTimeout(tm);r.classList.remove('hold')});
+ r.addEventListener('click',function(){if(long)return;haptic();select(r.dataset.c)})});
+document.querySelectorAll('.seg button').forEach(function(b){b.addEventListener('click',function(){
+ var s=b.dataset.m==='1';if(s===scam)return;haptic();scam=s;ls('scam',s?'1':'0');render()})});
 $('ref').addEventListener('click',function(){haptic();load()});
 document.addEventListener('visibilitychange',function(){if(!document.hidden&&R.t&&Date.now()/1000-R.t>6*3600)load()});
 document.addEventListener('gesturestart',function(e){e.preventDefault()});
-// Ciekawostki: ręcznie zebrana pula (tasowana bez powtórzeń) + co 5. karta losowy fragment z polskiej Wikipedii.
+
+// Ciekawostki: ręczna pula tasowana bez powtórzeń, co 5. karta losowy fragment z polskiej Wikipedii.
 var TV=[
 'Albańczycy nazywają swój kraj Shqipëria, co tradycyjnie tłumaczy się jako „kraj orłów”. Stąd dwugłowy orzeł na fladze.',
 'Wielu Albańczyków kiwa głową w górę i w dół na „nie”, a kręci na boki na „tak”. Łatwo o nieporozumienie przy zamawianiu.',
@@ -237,28 +292,23 @@ function shuf(){tvO=TV.map(function(_,i){return i});for(var i=tvO.length-1;i>0;i
 try{var st=JSON.parse(ls('tv'));if(st&&st.o&&st.o.length===TV.length){tvO=st.o;tvI=st.i}}catch(e){}
 if(!tvO.length)shuf();
 function tvShow(t,s){var c=$('tv');c.classList.add('f');setTimeout(function(){$('tvt').textContent=t;$('tvs').innerHTML=s;c.classList.remove('f')},180)}
-function tvLocal(){if(tvI>=tvO.length)shuf();var k=tvO[tvI++];ls('tv',JSON.stringify({o:tvO,i:tvI}));tvShow(TV[k],tvI+'/'+TV.length+' · stuknij ›')}
-function tvWiki(){
- var off=Math.random()*900|0;
+function tvLocal(){if(tvI>=tvO.length)shuf();var k=tvO[tvI++];ls('tv',JSON.stringify({o:tvO,i:tvI}));tvShow(TV[k],tvI+' z '+TV.length)}
+function tvWiki(){var off=Math.random()*900|0;
  return fetch('https://pl.wikipedia.org/w/api.php?action=query&list=search&srsearch=Albania%20albański&srlimit=20&sroffset='+off+'&srnamespace=0&format=json&origin=*')
  .then(function(r){return r.json()}).then(function(j){var a=j.query.search;if(!a.length)throw 0;
-  var t=a[Math.random()*a.length|0].title;
-  return fetch('https://pl.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(t))})
+  return fetch('https://pl.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(a[Math.random()*a.length|0].title))})
  .then(function(r){return r.json()}).then(function(p){var x=(p.extract||'').replace(/\s+/g,' ').trim();
   if(!/alba/i.test(x)||x.length<60)throw 0;
   if(x.length>170){x=x.slice(0,170);x=x.slice(0,x.lastIndexOf(' '))+'…'}
-  tvShow(x,'Wikipedia · <a href="'+p.content_urls.mobile.page+'" target="_blank">'+p.title+'</a>')})}
+  tvShow(x,'<a href="'+p.content_urls.mobile.page+'" target="_blank">Wikipedia</a>')})}
 function tvNext(){if(tvBusy)return;tvN++;
- if(tvN%5===0&&navigator.onLine!==false){tvBusy=true;tvWiki().catch(tvLocal).then(function(){tvBusy=false});}
- else tvLocal()}
+ if(tvN%5===0&&navigator.onLine!==false){tvBusy=true;tvWiki().catch(tvLocal).then(function(){tvBusy=false})}else tvLocal()}
 $('tv').addEventListener('click',function(e){if(e.target.tagName==='A')return;haptic();tvNext()});
 setInterval(function(){if(!document.hidden)tvNext()},25000);
-tvLocal();
-// iOS 26 (apka z ekranu początkowego): strona kończy się nad paskiem Home, a env(safe-area-inset-bottom) i tak zwraca ~34px.
-// Wtedy zdejmujemy dolny margines klawiatury, żeby nie było podwójnej przerwy.
-function fitH(){var r=document.documentElement,st=navigator.standalone,
- full=Math.max(screen.height,screen.width),p=innerHeight>=innerWidth;
- r.classList.toggle('gap',!!(st&&p&&full-innerHeight>20))}
-fitH();addEventListener('resize',fitH);addEventListener('orientationchange',function(){setTimeout(fitH,300)});
-render();load();
+
+// iOS 26 (apka z ekranu początkowego): strona kończy się nad paskiem Home, a safe-area i tak zwraca ~34px.
+function fitH(){var st=navigator.standalone,full=Math.max(screen.height,screen.width),p=innerHeight>=innerWidth;
+ document.documentElement.classList.toggle('gap',!!(st&&p&&full-innerHeight>20))}
+fitH();addEventListener('resize',function(){fitH();render()});
+tvLocal();render();load();
 </script></body></html>
