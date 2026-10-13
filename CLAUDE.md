@@ -40,7 +40,10 @@ Rynkowy/Ściemokurs i przycisk odświeżania są wspólne dla obu. Ostatnia kart
 **Przelicz**:
 
 - Trzy waluty ALL / PLN / EUR. Stuknięcie wiersza = licz od tej waluty; przytrzymanie = kopiuj kwotę (toast).
-- **Ściemokurs**: przelicza lek po 100 ALL = 1 EUR; EUR/PLN zostaje rynkowy. Widać też kurs rynkowy dla porównania.
+- **Ściemokurs**: przelicza lek po kursie „ściemy” 1 EUR = SR ALL (domyślnie **90**, tzn. 2000 ALL = 22,22 EUR);
+  EUR/PLN zostaje rynkowy. SR ustawiany w arkuszu (stuknij „Zmień” przy kursie albo ponownie aktywny segment
+  „Ściemokurs”): −/+ (przytrzymanie powtarza), szybkie 90 / 95 / 100, zakres 50–150, zapis w localStorage `sr`.
+  Arkusz pokazuje przykład 2000 ALL w EUR po ściemie i rynkowo. Widać też kurs rynkowy dla porównania.
 - Kurs z `https://open.er-api.com/v6/latest/EUR` (ma ALL i CORS; EBC/Frankfurter nie mają ALL).
   Fallback wbudowany + ostatni kurs w localStorage. Auto-odświeżanie po >6 h przy powrocie do apki.
   Kropka statusu: zielona = świeży, pomarańczowa = stary/przybliżony.

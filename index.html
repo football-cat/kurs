@@ -18,12 +18,13 @@
  --red:rgba(228,30,32,.22);--blu:rgba(0,122,255,.10);--o1:rgba(255,149,0,.30);--o2:rgba(255,59,48,.12);
  --sys:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",system-ui,sans-serif;
  --disp:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",system-ui,sans-serif;
- --kh:58px;
+ --kh:58px;--sh:rgba(246,246,249,.94);
 }
 @media (prefers-color-scheme:dark){:root{
  --bg:#000;--fg:#fff;--sec:rgba(235,235,245,.6);--ter:rgba(235,235,245,.3);--sep:rgba(84,84,88,.6);
  --acc:#0a84ff;--org:#ff9f0a;--ok:#30d158;--del:#ff453a;
  --gl:rgba(255,255,255,.10);--glb:rgba(255,255,255,.13);--glfn:rgba(255,255,255,.2);--hi:rgba(255,255,255,.16);
+ --sh:rgba(30,30,32,.94);
  --seg:rgba(118,118,128,.24);--thumb:#636366;--shk:none;--rowbg:#000;
  --red:rgba(228,30,32,.34);--blu:rgba(10,132,255,.14);--o1:rgba(255,159,10,.34);--o2:rgba(255,69,58,.16);
 }}
@@ -162,6 +163,28 @@ body #icur{--i:var(--ii,0)}
 .tabs button[aria-selected=true]{color:var(--acc)}
 .tabs svg{width:24px;height:24px}
 
+.lnk{font:inherit;color:var(--acc);padding:6px 4px;margin:-6px 0}
+.dim{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .3s}
+.dim.on{opacity:1;pointer-events:auto}
+.sheet.glass{background:var(--sh);-webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%)}
+.sheet{position:fixed;z-index:21;left:8px;right:8px;bottom:8px;max-width:504px;margin:0 auto;border-radius:34px;padding:8px 20px calc(env(safe-area-inset-bottom) + 16px);
+ text-align:center;transform:translateY(calc(100% + 16px));transition:transform .42s cubic-bezier(.3,1.15,.5,1)}
+.gap .sheet{padding-bottom:16px}
+.sheet.on{transform:none}
+.sheet .grab{width:36px;height:5px;border-radius:3px;background:var(--ter);margin:0 auto 14px}
+.sheet h2{font-size:17px;font-weight:600}
+.sheet .sub{font-size:15px;color:var(--sec);margin-top:2px}
+.stp{display:flex;align-items:center;justify-content:center;gap:22px;margin:18px 0 6px}
+.stp .rb{width:56px;height:56px;border-radius:50%;font-size:30px;font-weight:300;color:var(--acc);display:grid;place-items:center;transition:transform .2s cubic-bezier(.3,1.5,.5,1)}
+.stp .rb.p{transform:scale(.9)}
+.stp .val{min-width:150px;font-family:var(--disp);font-size:64px;font-weight:200;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1}
+.stp .val small{font-size:17px;font-weight:600;color:var(--acc);letter-spacing:0;margin-left:6px}
+.pre{display:flex;justify-content:center;gap:8px;margin:14px 0 6px}
+.pre button{height:34px;padding:0 16px;border-radius:17px;font-size:15px;font-weight:500;background:var(--seg)}
+.pre button[aria-pressed=true]{background:var(--acc);color:#fff}
+.sheet .ex{font-size:13px;color:var(--sec);line-height:1.5;margin:10px 0 16px}
+.sheet .ex b{color:var(--fg);font-weight:500}
+.done{width:100%;height:52px;border-radius:26px;background:var(--acc);color:#fff;font-size:17px;font-weight:600}
 .toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 10px);z-index:9;padding:10px 18px;border-radius:999px;font-size:15px;font-weight:500;
  opacity:0;transform:translate(-50%,-14px) scale(.96);transition:opacity .25s,transform .35s cubic-bezier(.3,1.3,.5,1);pointer-events:none;white-space:nowrap}
 .toast.on{opacity:1;transform:translate(-50%,0) scale(1)}
@@ -243,6 +266,20 @@ body #icur{--i:var(--ii,0)}
   <button role="tab" data-t="1" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-2-1.4-2 1.4-2-1.4-2 1.4-2-1.4L6 21z"/><path d="M9.5 8h5M9.5 12h5M9.5 16h3"/></svg>Suma</button>
  </nav>
 </div>
+<div class="dim" id="dim"></div>
+<div class="sheet glass" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shT" aria-hidden="true">
+ <div class="grab"></div>
+ <h2 id="shT">Ściemokurs</h2>
+ <div class="sub">Ile leków liczą za 1 euro</div>
+ <div class="stp">
+  <button class="rb glass" data-d="-1" aria-label="Mniej leków za euro">−</button>
+  <div class="val" aria-live="polite"><span id="srV"></span><small>ALL</small></div>
+  <button class="rb glass" data-d="1" aria-label="Więcej leków za euro">+</button>
+ </div>
+ <div class="pre" id="srPre"><button data-v="90">90</button><button data-v="95">95</button><button data-v="100">100</button></div>
+ <div class="ex" id="srEx"></div>
+ <button class="done" id="srDone">Gotowe</button>
+</div>
 <div class="toast glass" id="toast" role="status"></div>
 <label id="hp"><input type="checkbox" switch></label>
 <script>
@@ -252,8 +289,10 @@ function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorag
 function lj(k){try{return JSON.parse(ls(k))}catch(e){return null}}
 var c0=lj('kurs');if(c0&&c0.PLN&&c0.ALL)R=c0;
 scam=ls('scam')==='1';tab=ls('tab')==='1'?1:0;
+// Kurs „ściemy”: ile leków liczą za 1 EUR (domyślnie 90, ustawialny 50–150).
+var SR=+ls('sr');if(!(SR>=50&&SR<=150))SR=90;
 function $(i){return document.getElementById(i)}
-function K(c){return c==='ALL'&&scam?100:R[c]}
+function K(c){return c==='ALL'&&scam?SR:R[c]}
 function conv(v,from,to){return v/K(from)*K(to)}
 function num(s){var v=parseFloat(String(s).replace(',','.'));return isFinite(v)?v:NaN}
 function grp(i){return i.replace(/\B(?=(\d{3})+(?!\d))/g,' ')}
@@ -377,7 +416,7 @@ function renderMeta(){
  var old=!R.t||(Date.now()/1000-R.t>3*86400);
  $('src').innerHTML='<span class="dot'+(old?' old':'')+'"></span>'+(R.t?'Kurs z '+t:'Kurs przybliżony, brak połączenia');
  var A=K('ALL');
- $('cross').innerHTML=(scam?'<span class="w">Ściemokurs: 100 ALL za 1 EUR, rynkowo '+n(R.ALL,2)+'</span><br>':'')+
+ $('cross').innerHTML=(scam?'<span class="w">Ściemokurs: 1 EUR = '+SR+' ALL, rynkowo '+n(R.ALL,2)+'</span> <button class="lnk" data-sr>Zmień</button><br>':'')+
   '1 EUR = <b>'+n(A,2)+' ALL</b> = <b>'+n(R.PLN,4)+' PLN</b>, 1 PLN = <b>'+n(A/R.PLN,2)+' ALL</b>';
  document.body.classList.toggle('scam',scam);
  $('mode').querySelectorAll('button').forEach(function(b){b.setAttribute('aria-selected',String((b.dataset.m==='1')===scam))})}
@@ -401,7 +440,22 @@ document.querySelectorAll('.kp button').forEach(function(b){
  ['pointerup','pointercancel','pointerleave'].forEach(function(e){b.addEventListener(e,function(){b.classList.remove('p')})});
  b.addEventListener('click',function(){haptic();closeOpen();(b.parentNode.dataset.pad==='1'?keySum:keyConv)(b.dataset.k)})});
 $('mode').querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){
- var s=b.dataset.m==='1';if(s===scam)return;haptic();scam=s;ls('scam',s?'1':'0');renderAll()})});
+ var s=b.dataset.m==='1';if(s===scam){if(s)openSR();return}haptic();scam=s;ls('scam',s?'1':'0');renderAll()})});
+// Arkusz ustawienia ściemokursu: stuknij „Zmień” albo ponownie aktywny segment „Ściemokurs”.
+function renderSR(){$('srV').textContent=SR;
+ $('srPre').querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String(+b.dataset.v===SR))});
+ var x=2000;$('srEx').innerHTML='Np. '+grp(String(x))+' ALL = <b>'+fmt(x/SR,'EUR')+' EUR</b> (rynkowo '+fmt(x/R.ALL,'EUR')+' EUR)'}
+function setSR(v){v=Math.max(50,Math.min(150,Math.round(v)));if(v===SR)return;SR=v;ls('sr',String(v));haptic();renderSR();renderAll()}
+function openSR(){renderSR();$('dim').classList.add('on');$('sheet').classList.add('on');$('sheet').setAttribute('aria-hidden','false');haptic()}
+function closeSR(){$('dim').classList.remove('on');$('sheet').classList.remove('on');$('sheet').setAttribute('aria-hidden','true')}
+$('cross').addEventListener('click',function(e){if(e.target.closest('[data-sr]'))openSR()});
+$('dim').addEventListener('click',closeSR);$('srDone').addEventListener('click',function(){haptic();closeSR()});
+$('srPre').querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){setSR(+b.dataset.v)})});
+// −/+ : stuknięcie = 1, przytrzymanie = powtarzanie
+$('sheet').querySelectorAll('.rb').forEach(function(b){var t1,t2,d=+b.dataset.d;
+ function stop(){clearTimeout(t1);clearInterval(t2);b.classList.remove('p')}
+ b.addEventListener('pointerdown',function(){b.classList.add('p');setSR(SR+d);t1=setTimeout(function(){t2=setInterval(function(){setSR(SR+d)},90)},420)});
+ ['pointerup','pointercancel','pointerleave'].forEach(function(e){b.addEventListener(e,stop)})});
 $('tabs').querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){
  var t=+b.dataset.t;if(t===tab)return;haptic();closeOpen();setTab(t,true)})});
 $('ref').addEventListener('click',function(){haptic();load()});
@@ -414,7 +468,7 @@ var TV=[
 'Wielu Albańczyków kiwa głową w górę i w dół na „nie”, a kręci na boki na „tak”. Łatwo o nieporozumienie przy zamawianiu.',
 'Ceny często podaje się w „starych lekach”, czyli ×10. Lek zdenominowano w 1965 r., ale nawyk liczenia po staremu przetrwał.',
 'Nazwa waluty „lek” pochodzi od Aleksandra Wielkiego: Leka to albańskie zdrobnienie imienia Aleksander.',
-'W turystycznych miejscach euro często przyjmuje się po zaokrąglonym kursie 100 lek. Stąd ściemokurs.',
+'W turystycznych miejscach euro często przyjmuje się po „okrągłym” kursie zamiast rynkowego. Stąd ściemokurs.',
 'Za rządów Envera Hoxhy zbudowano ponad 170 tysięcy betonowych bunkrów, mniej więcej jeden na kilkunastu mieszkańców.',
 'W 1967 r. Albania ogłosiła się pierwszym oficjalnie ateistycznym państwem na świecie. Religię zalegalizowano ponownie w 1990 r.',
 'Enver Hoxha rządził Albanią od 1944 do śmierci w 1985 r. Zerwał po kolei z Jugosławią, ZSRR (1961) i Chinami (1978).',
