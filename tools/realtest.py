@@ -2,7 +2,7 @@
 # Symulacja realnych iPhone'ów w trybie apki: górna wstawka (wyspa/status bar) + obcięty dół w iOS 26.
 from playwright.sync_api import sync_playwright
 import os,sys
-DEV={'16pro':(393,791,59,852),'se':(375,667,20,667),'promax':(440,895,62,956)}
+DEV={'16pro':(393,791,59,852),'se':(375,667,20,667),'promax':(440,895,62,956),'16pro-poziomo':(852,372,0,393)}
 def k(pg,pad,key): pg.click(f'.kp[data-pad="{pad}"] button[data-k="{key}"]')
 def page(b,dev,sch):
     w,h,top,sh=DEV[dev]
@@ -10,7 +10,8 @@ def page(b,dev,sch):
     pg.add_init_script(f"""Object.defineProperty(navigator,'standalone',{{get:()=>true}});Object.defineProperty(screen,'height',{{get:()=>{sh}}});
     """)
     errs=[];pg.on('pageerror',lambda e:errs.append(str(e)))
-    src=open('index.html').read().replace('</title>','</title><style>body{padding-top:%dpx!important}</style>'%top,1)
+    pad='padding-top:%dpx!important'%top if w<h else 'padding-left:59px!important;padding-right:59px!important'
+    src=open('index.html').read().replace('</title>','</title><style>body{%s}</style>'%pad,1)
     tmp='/tmp/sim_%s.html'%dev; open(tmp,'w').write(src)
     pg.goto('file://'+tmp); pg.wait_for_timeout(300)
     return pg,errs

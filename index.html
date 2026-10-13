@@ -8,6 +8,30 @@
 <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<link rel="manifest" href="manifest.json">
+<!-- Ekrany startowe (tło apki, jasne/ciemne) -->
+<link rel="apple-touch-startup-image" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" href="splash/440x956@3-light.png">
+<link rel="apple-touch-startup-image" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" href="splash/440x956@3-dark.png">
+<link rel="apple-touch-startup-image" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" href="splash/430x932@3-light.png">
+<link rel="apple-touch-startup-image" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" href="splash/430x932@3-dark.png">
+<link rel="apple-touch-startup-image" media="(device-width: 420px) and (device-height: 912px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" href="splash/420x912@3-light.png">
+<link rel="apple-touch-startup-image" media="(device-width: 420px) and (device-height: 912px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" href="splash/420x912@3-dark.png">
+<link rel="apple-touch-startup-image" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" href="splash/402x874@3-light.png">
+<link rel="apple-touch-startup-image" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" href="splash/402x874@3-dark.png">
+<link rel="apple-touch-startup-image" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" href="splash/393x852@3-light.png">
+<link rel="apple-touch-startup-image" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" href="splash/393x852@3-dark.png">
+<link rel="apple-touch-startup-image" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" href="splash/428x926@3-light.png">
+<link rel="apple-touch-startup-image" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" href="splash/428x926@3-dark.png">
+<link rel="apple-touch-startup-image" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" href="splash/390x844@3-light.png">
+<link rel="apple-touch-startup-image" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" href="splash/390x844@3-dark.png">
+<link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" href="splash/414x896@3-light.png">
+<link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" href="splash/414x896@3-dark.png">
+<link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: light)" href="splash/375x812@3-light.png">
+<link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) and (prefers-color-scheme: dark)" href="splash/375x812@3-dark.png">
+<link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) and (prefers-color-scheme: light)" href="splash/414x896@2-light.png">
+<link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) and (prefers-color-scheme: dark)" href="splash/414x896@2-dark.png">
+<link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) and (prefers-color-scheme: light)" href="splash/375x667@2-light.png">
+<link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) and (prefers-color-scheme: dark)" href="splash/375x667@2-dark.png">
 <title>Kurs</title>
 <style>
 :root{
@@ -63,7 +87,7 @@ body.scam #mode button[data-m="1"]{color:var(--org)}
 
 .panes{position:relative;flex:1;min-height:0}
 .pane{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden}
-.pane[hidden]{display:none}
+.pane[hidden]{display:none!important}
 .pane.in{animation:pin .32s cubic-bezier(.3,1.2,.5,1)}
 @keyframes pin{from{opacity:0;transform:translateX(calc(var(--dx,1) * 18px))}}
 
@@ -72,6 +96,7 @@ body.scam #mode button[data-m="1"]{color:var(--org)}
 .cur{display:flex;align-items:baseline;gap:12px;min-height:50px;padding:4px 0;border-top:.5px solid var(--sep);transition:transform .18s}
 .cur:first-child{border-top:0}
 .cur.hold{transform:scale(.97)}
+.cur,.inp .v,.big{touch-action:none}
 .lab{flex:none;display:flex;align-items:center;gap:7px;font-size:15px;font-weight:600;color:var(--sec);transition:color .25s}
 .fl{font-size:19px;line-height:1}
 .num{flex:1;min-width:0;text-align:right;white-space:nowrap;overflow:hidden;font-family:var(--disp);font-variant-numeric:tabular-nums;
@@ -105,8 +130,9 @@ body.scam #mode button[data-m="1"]{color:var(--org)}
 .big .cc{flex:none;font-size:17px;font-weight:600;color:var(--acc)}
 .big.bump .num{animation:pop .3s cubic-bezier(.3,1.3,.5,1)}
 .alt{display:flex;justify-content:flex-end;gap:8px;margin-top:4px}
-.chip{height:32px;padding:0 12px;border-radius:16px;font-size:15px;font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:6px}
+.chip{white-space:nowrap;flex:none;height:32px;padding:0 12px;border-radius:16px;font-size:15px;font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:6px}
 .chip .fl{font-size:15px}
+.alt.nf .fl{display:none}.alt.sm .chip{font-size:13px;padding:0 9px}
 
 .th2{flex:none;display:flex;justify-content:space-between;align-items:center;padding:8px 20px 4px;font-size:13px;color:var(--sec);min-height:34px}
 .th2 button{font-size:15px;color:var(--acc);padding:4px 0 4px 12px;transition:color .2s}
@@ -188,6 +214,8 @@ body #icur{--i:var(--ii,0)}
 .toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 10px);z-index:9;padding:10px 18px;border-radius:999px;font-size:15px;font-weight:500;
  opacity:0;transform:translate(-50%,-14px) scale(.96);transition:opacity .25s,transform .35s cubic-bezier(.3,1.3,.5,1);pointer-events:none;white-space:nowrap}
 .toast.on{opacity:1;transform:translate(-50%,0) scale(1)}
+.toast.on.act{pointer-events:auto}
+.toast .tact{color:var(--acc);font-weight:600;margin-left:16px;padding:6px 0;margin-block:-6px}
 #hp{position:absolute;left:-99px;opacity:0;pointer-events:none}
 
 /* Układ dopasowywany w JS (fitLayout) do faktycznej wysokości, z uwzględnieniem wyspy i paska Home. */
@@ -199,6 +227,15 @@ body #icur{--i:var(--ii,0)}
 .c1 .tabs{height:52px;border-radius:26px}.c1 .tabs .th{border-radius:22px}.c1 .tabs svg{width:22px;height:22px}
 .tight .big .num{font-size:48px}.tight .inp{padding:6px 16px 8px}.tight .inp .v{font-size:30px}.tight .th2{padding-top:4px;min-height:30px}
 .notv .tv{display:none}
+/* Poziomo: treść po lewej połowie, klawiatura (i pole wpisywania Sumy) przypięte w prawej połowie. */
+.land .app{max-width:860px}
+.land .pane>*{width:50%}
+.land .kp{position:absolute;right:0;bottom:0}
+.land #p1 .inp{position:absolute;right:0;bottom:calc(4 * var(--kh) + 36px)}
+.land #p0 .tv{display:none}
+.land #p1 .tape{margin-bottom:10px;width:calc(50% - 32px)}
+.land .meta{font-size:12px}
+.land .cur.on .num{font-size:48px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 </style></head><body>
 <div class="amb" aria-hidden="true"><i class="r"></i><i class="o"></i></div>
@@ -283,7 +320,8 @@ body #icur{--i:var(--ii,0)}
 <div class="toast glass" id="toast" role="status"></div>
 <label id="hp"><input type="checkbox" switch></label>
 <script>
-var FB={EUR:1,PLN:4.25,ALL:97.0,t:0};
+// Kurs wbudowany (13.10.2026), tylko gdy nigdy nie udało się pobrać kursu.
+var FB={EUR:1,PLN:4.387,ALL:91.55,t:0};
 var R=FB,C=['ALL','PLN','EUR'],FL={ALL:'🇦🇱',PLN:'🇵🇱',EUR:'🇪🇺'},scam=false,tab=0;
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
 function lj(k){try{return JSON.parse(ls(k))}catch(e){return null}}
@@ -300,20 +338,31 @@ function showBuf(b){var p=b.split(',');return grp(p[0]||'0')+(p.length>1?','+p[1
 // Grupowanie tysięcy zawsze spacją (toLocaleString pl-PL nie grupuje liczb 4-cyfrowych, a wpisywana kwota tak).
 function fmt(v,c){var d=c==='ALL'?0:2;if(c!=='ALL'&&v!==0&&Math.abs(v)<1)d=4;
  var s=Math.abs(v).toFixed(d).split('.');return (v<0&&+s.join('.')!==0?'-':'')+grp(s[0])+(s[1]?','+s[1]:'')}
+// W Sumie zawsze 2 miejsca (0,60 EUR, nie 0,6008 EUR).
+function fmtS(v,c){var d=c==='ALL'?0:2,x=Math.abs(v).toFixed(d).split('.');return (v<0&&+x.join('.')!==0?'-':'')+grp(x[0])+(x[1]?','+x[1]:'')}
 function n(v,d){return v.toLocaleString('pl-PL',{maximumFractionDigits:d})}
 // Dopasowanie rozmiaru liczby do szerokości (jak wyświetlacz Kalkulatora).
 function fit(el,max,min){var s=max;el.style.fontSize=s+'px';
  while(el.scrollWidth>el.clientWidth+1&&s>min){s-=2;el.style.fontSize=s+'px'}}
 var sm=function(){return document.documentElement.classList.contains('tight')};
 function haptic(){try{$('hp').click()}catch(e){}}
-function toast(t){var e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(function(){e.classList.remove('on')},1500)}
+function toast(t,act,fn){var e=$('toast');e.textContent=t;
+ if(act){var b=document.createElement('button');b.className='tact';b.textContent=act;
+  b.addEventListener('click',function(){haptic();fn();e.classList.remove('on')});e.appendChild(b)}
+ e.classList.toggle('act',!!act);e.classList.add('on');clearTimeout(toast.t);
+ toast.t=setTimeout(function(){e.classList.remove('on')},act?4500:1600)}
 function copy(txt,label){var p=navigator.clipboard&&navigator.clipboard.writeText(txt.replace(/[\s ]/g,''));
  if(p)p.then(function(){toast('Skopiowano '+label)},function(){toast('Nie udało się skopiować')});else toast('Nie udało się skopiować')}
-function longPress(el,fn,tap){var t0=0,tm,long=false;
- el.addEventListener('pointerdown',function(){t0=Date.now();long=false;tm=setTimeout(function(){el.classList.add('hold');haptic()},420)});
- el.addEventListener('pointerup',function(){clearTimeout(tm);el.classList.remove('hold');if(Date.now()-t0>=420){long=true;fn()}});
+// Stuknięcie / przytrzymanie / przesunięcie w poziomie (el._swipe) – jedno miejsce obsługi gestów.
+function longPress(el,fn,tap){var t0=0,tm,long=false,mv=false,x0=0,y0=0;
+ el.addEventListener('pointerdown',function(e){t0=Date.now();long=false;mv=false;x0=e.clientX;y0=e.clientY;
+  tm=setTimeout(function(){if(!mv&&fn){el.classList.add('hold');haptic()}},420)});
+ el.addEventListener('pointermove',function(e){if(!mv&&(Math.abs(e.clientX-x0)>10||Math.abs(e.clientY-y0)>10)){mv=true;clearTimeout(tm);el.classList.remove('hold')}});
+ el.addEventListener('pointerup',function(e){clearTimeout(tm);el.classList.remove('hold');var dx=e.clientX-x0,dy=e.clientY-y0;
+  if(el._swipe&&Math.abs(dx)>36&&Math.abs(dy)<40){long=true;el._swipe();return}
+  if(!mv&&fn&&Date.now()-t0>=420){long=true;fn()}});
  el.addEventListener('pointercancel',function(){clearTimeout(tm);el.classList.remove('hold')});
- el.addEventListener('click',function(){if(!long&&tap)tap()})}
+ el.addEventListener('click',function(){if(!long&&!mv&&tap)tap()})}
 
 // Wpisywanie z klawiatury: wspólne zasady dla obu kart (ALL bez groszy, max 2 miejsca po przecinku).
 function typeKey(st,k,cur){
@@ -343,6 +392,7 @@ function selectConv(c){if(c===cv.act)return;var v=num(cv.buf);
 function keyConv(k){if(k==='N'){selectConv(C[(C.indexOf(cv.act)+1)%3]);return}
  if(typeKey(cv,k,cv.act))renderConv()}
 document.querySelectorAll('.cur').forEach(function(r){
+ r._swipe=function(){haptic();keyConv('B')};
  longPress(r,function(){copy(r.querySelector('.num').textContent,r.querySelector('.num').textContent+' '+r.dataset.c)},
   function(){haptic();selectConv(r.dataset.c)})});
 
@@ -351,16 +401,20 @@ var su={buf:'',fresh:false,cur:C.indexOf(ls('icur'))>=0?ls('icur'):'ALL',tot:C.i
 if(!Array.isArray(su.items))su.items=[];
 var uid=Date.now();
 function total(c){return su.items.reduce(function(s,e){return s+conv(e.v,e.c,c)},0)}
-function sgn(v,c){return (v<0?'−':'+')+' '+fmt(Math.abs(v),c)}
+function sgn(v,c){return (v<0?'−':'+')+' '+fmtS(Math.abs(v),c)}
 function renderSum(bumpBig){
  var t=total(su.tot),el=$('sBig');
- el.textContent=fmt(t,su.tot).replace('-','−');el.classList.toggle('ph',!su.items.length);
+ el.textContent=fmtS(t,su.tot).replace('-','−');el.classList.toggle('ph',!su.items.length);
  $('sCc').textContent=su.tot;
  fit(el,sm()?50:60,26);
  if(bumpBig){var b=$('big');b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump')}
  $('alt').style.visibility=su.items.length?'visible':'hidden';
  $('alt').innerHTML=C.filter(function(c){return c!==su.tot}).map(function(c){
-  return '<button class="chip glass" data-c="'+c+'" aria-label="Pokaż sumę w '+c+'"><span class="fl">'+FL[c]+'</span>'+fmt(total(c),c).replace('-','−')+' '+c+'</button>'}).join('');
+  return '<button class="chip glass" data-c="'+c+'" aria-label="Pokaż sumę w '+c+'"><span class="fl">'+FL[c]+'</span>'+fmtS(total(c),c).replace('-','−')+' '+c+'</button>'}).join('');
+ // Za wąsko na kapsuły z flagami (duże kwoty, SE, poziomo): najpierw bez flag, potem mniejsze.
+ var al=$('alt');al.classList.remove('nf','sm');
+ function ovf(){var c=al.firstElementChild;return c&&c.getBoundingClientRect().left<al.getBoundingClientRect().left-1}
+ if(ovf())al.classList.add('nf');if(ovf())al.classList.add('sm');
  $('alt').querySelectorAll('.chip').forEach(function(b){b.onclick=function(){haptic();su.tot=b.dataset.c;ls('tcur',su.tot);renderSum(true);renderTape()}});
  var nI=su.items.length;
  $('cnt').textContent=nI?nI+' '+(nI===1?'pozycja':(nI%10>=2&&nI%10<=4&&(nI%100<10||nI%100>=20))?'pozycje':'pozycji'):'';
@@ -371,7 +425,7 @@ function renderSum(bumpBig){
  $('icur').querySelectorAll('button').forEach(function(b){b.setAttribute('aria-selected',String(b.dataset.c===su.cur))});
  ls('items',JSON.stringify(su.items));ls('icur',su.cur);ls('tcur',su.tot)}
 function rowHTML(e){return '<div class="tr"><div class="in"><span class="a'+(e.v<0?' neg':'')+'">'+sgn(e.v,e.c)+
- '</span><span class="c">'+e.c+'</span>'+(e.c!==su.tot?'<span class="eq">'+fmt(conv(e.v,e.c,su.tot),su.tot).replace('-','−')+' '+su.tot+'</span>':'')+'</div><button class="del" aria-label="Usuń pozycję">Usuń</button></div>'}
+ '</span><span class="c">'+e.c+'</span>'+(e.c!==su.tot?'<span class="eq">'+fmtS(conv(e.v,e.c,su.tot),su.tot).replace('-','−')+' '+su.tot+'</span>':'')+'</div><button class="del" aria-label="Usuń pozycję">Usuń</button></div>'}
 function renderTape(newId){
  var tp=$('tape');
  if(!su.items.length){tp.innerHTML='<div class="empty">Wpisz kwotę i stuknij +, żeby dodać ją do sumy. Każda pozycja może być w innej walucie, a − odejmuje.</div>';return}
@@ -393,7 +447,9 @@ function swipe(d){var x0,y0,base=0,dx=0,on=false,dir=0;
  d.addEventListener('pointerup',end);d.addEventListener('pointercancel',function(){on=false;d.classList.remove('drag');setX(d,openRow===d?-88:0)});
  d.querySelector('.del').addEventListener('click',function(e){e.stopPropagation();del(d)})}
 function del(d){haptic();var id=+d.dataset.id;openRow=null;d.style.maxHeight=d.offsetHeight+'px';void d.offsetWidth;d.classList.add('out');
- setTimeout(function(){su.items=su.items.filter(function(e){return e.id!==id});renderSum(true);renderTape()},330)}
+ setTimeout(function(){var i=su.items.findIndex(function(e){return e.id===id});if(i<0)return;var e=su.items[i];
+  su.items.splice(i,1);renderSum(true);renderTape();
+  toast('Usunięto '+sgn(e.v,e.c)+' '+e.c,'Cofnij',function(){su.items.splice(Math.min(i,su.items.length),0,e);renderSum(true);renderTape(e.id)})},330)}
 function keySum(k){
  if(k==='+'||k==='-'){var v=num(su.buf);
   if(isNaN(v)||v===0){var i=$('inp');i.classList.remove('shake');void i.offsetWidth;i.classList.add('shake');return}
@@ -407,19 +463,24 @@ var clrT;
 $('clr').addEventListener('click',function(){var b=$('clr');haptic();
  if(!b.classList.contains('cf')){b.classList.add('cf');b.textContent='Wyczyścić wszystko?';clearTimeout(clrT);
   clrT=setTimeout(function(){b.classList.remove('cf');b.textContent='Wyczyść'},3000);return}
- clearTimeout(clrT);b.classList.remove('cf');b.textContent='Wyczyść';su.items=[];renderSum(true);renderTape()});
+ clearTimeout(clrT);b.classList.remove('cf');b.textContent='Wyczyść';var bak=su.items;su.items=[];renderSum(true);renderTape();
+ toast('Wyczyszczono rachunek','Cofnij',function(){su.items=bak;renderSum(true);renderTape()})});
+$('iv')._swipe=function(){haptic();keySum('B')};longPress($('iv'));
 longPress($('big'),function(){copy($('sBig').textContent,$('sBig').textContent+' '+su.tot)});
 
 /* ===== Wspólne ===== */
 function renderMeta(){
- var t=R.t?new Date(R.t*1000).toLocaleString('pl-PL',{day:'numeric',month:'numeric',hour:'2-digit',minute:'2-digit'}):'';
  var old=!R.t||(Date.now()/1000-R.t>3*86400);
- $('src').innerHTML='<span class="dot'+(old?' old':'')+'"></span>'+(R.t?'Kurs z '+t:'Kurs przybliżony, brak połączenia');
+ $('src').innerHTML='<span class="dot'+(old?' old':'')+'"></span>'+(R.t?'Kurs: '+when(R.t,R.d):'Kurs przybliżony, brak połączenia');
  var A=K('ALL');
  $('cross').innerHTML=(scam?'<span class="w">Ściemokurs: 1 EUR = '+SR+' ALL, rynkowo '+n(R.ALL,2)+'</span> <button class="lnk" data-sr>Zmień</button><br>':'')+
   '1 EUR = <b>'+n(A,2)+' ALL</b> = <b>'+n(R.PLN,4)+' PLN</b>, 1 PLN = <b>'+n(A/R.PLN,2)+' ALL</b>';
  document.body.classList.toggle('scam',scam);
  $('mode').querySelectorAll('button').forEach(function(b){b.setAttribute('aria-selected',String((b.dataset.m==='1')===scam))})}
+// „dziś, 02:02” / „wczoraj, 02:02” / „10 października”
+function when(t,dateOnly){var d=new Date(t*1000),a=new Date(),day=Math.round((new Date(a.toDateString())-new Date(d.toDateString()))/864e5);
+ var w=day===0?'dziś':day===1?'wczoraj':d.toLocaleDateString('pl-PL',{day:'numeric',month:'long'});
+ return dateOnly||day>1?w:w+', '+d.toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'})}
 function renderAll(){renderMeta();renderConv();renderSum();renderTape();if(window.fitLayout)fitLayout()}
 function setTab(t,anim){tab=t;ls('tab',String(t));
  [0,1].forEach(function(i){var p=$('p'+i);p.hidden=i!==t;p.classList.remove('in');
@@ -427,13 +488,21 @@ function setTab(t,anim){tab=t;ls('tab',String(t));
  $('tabs').classList.toggle('t1',t===1);
  $('tabs').querySelectorAll('button').forEach(function(b){b.setAttribute('aria-selected',String(+b.dataset.t===t))});
  renderConv();renderSum()}
-function load(){$('ref').classList.add('spin');
- var ac=window.AbortController?new AbortController():null,to=setTimeout(function(){ac&&ac.abort()},6000);
- fetch('https://open.er-api.com/v6/latest/EUR',ac?{signal:ac.signal,cache:'no-store'}:{cache:'no-store'})
- .then(function(r){return r.json()}).then(function(j){
-  if(j.result!=='success'||!j.rates.PLN||!j.rates.ALL)throw 0;
-  R={EUR:1,PLN:j.rates.PLN,ALL:j.rates.ALL,t:j.time_last_update_unix};ls('kurs',JSON.stringify(R))})
- .catch(function(){}).then(function(){clearTimeout(to);$('ref').classList.remove('spin');renderAll()})}
+// Kurs: open.er-api.com, a gdy nie działa – currency-api (jsDelivr, potem Cloudflare). Wszystkie z CORS, bez klucza.
+function getJSON(u,ms){var ac=window.AbortController?new AbortController():null,to=setTimeout(function(){ac&&ac.abort()},ms);
+ return fetch(u,ac?{signal:ac.signal,cache:'no-store'}:{cache:'no-store'}).then(function(r){clearTimeout(to);if(!r.ok)throw 0;return r.json()},function(e){clearTimeout(to);throw e})}
+function capi(j){return {PLN:j.eur.pln,ALL:j.eur.all,t:Date.parse(j.date+'T00:00:00Z')/1000,d:1}}
+var SRC=[
+ ['https://open.er-api.com/v6/latest/EUR',function(j){if(j.result!=='success')throw 0;return {PLN:j.rates.PLN,ALL:j.rates.ALL,t:j.time_last_update_unix,d:0}}],
+ ['https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/eur.min.json',capi],
+ ['https://latest.currency-api.pages.dev/v1/currencies/eur.min.json',capi]];
+var loading=false;
+function load(manual){if(loading)return;loading=true;$('ref').classList.add('spin');var i=0;
+ function done(ok){loading=false;$('ref').classList.remove('spin');renderAll();
+  if(manual)toast(ok?'Kurs zaktualizowany':'Brak połączenia, zostaje zapisany kurs')}
+ (function next(){if(i>=SRC.length){done(false);return}var s=SRC[i++];
+  getJSON(s[0],5000).then(s[1]).then(function(x){if(!(x.PLN>0&&x.ALL>0&&x.t>0))throw 0;
+   R={EUR:1,PLN:x.PLN,ALL:x.ALL,t:x.t,d:x.d};ls('kurs',JSON.stringify(R));done(true)}).catch(next)})()}
 
 document.querySelectorAll('.kp button').forEach(function(b){
  b.addEventListener('pointerdown',function(){b.classList.add('p')});
@@ -458,7 +527,7 @@ $('sheet').querySelectorAll('.rb').forEach(function(b){var t1,t2,d=+b.dataset.d;
  ['pointerup','pointercancel','pointerleave'].forEach(function(e){b.addEventListener(e,stop)})});
 $('tabs').querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){
  var t=+b.dataset.t;if(t===tab)return;haptic();closeOpen();setTab(t,true)})});
-$('ref').addEventListener('click',function(){haptic();load()});
+$('ref').addEventListener('click',function(){haptic();load(true)});
 document.addEventListener('visibilitychange',function(){if(!document.hidden&&R.t&&Date.now()/1000-R.t>6*3600)load()});
 document.addEventListener('gesturestart',function(e){e.preventDefault()});
 
@@ -554,7 +623,8 @@ setInterval(function(){if(!document.hidden&&tab===0)tvNext()},25000);
 
 // iOS 26 (apka z ekranu początkowego): strona kończy się nad paskiem Home, a safe-area i tak zwraca ~34px.
 function fitH(){var s=navigator.standalone,full=Math.max(screen.height,screen.width),p=innerHeight>=innerWidth;
- document.documentElement.classList.toggle('gap',!!(s&&p&&full-innerHeight>20))}
+ document.documentElement.classList.toggle('gap',!!(s&&p&&full-innerHeight>20));
+ document.documentElement.classList.toggle('land',!p&&innerHeight<600)}
 // Gwarancja, że nic nie wchodzi pod pasek kart: dopasuj układ do realnej wysokości panelu.
 // Układ liczony zawsze dla karty Przelicz (najbardziej wymagającej), żeby klawiatura i nagłówek nie skakały
 // przy zmianie karty; w Sumie lista pozycji bierze resztę miejsca.
@@ -564,8 +634,11 @@ function fitLayout(){var r=document.documentElement,p=$('p0'),q=$('p1'),ALLC=['t
  // obie karty widoczne na czas pomiaru (nieaktywna niewidzialna)
  [p,q].forEach(function(x,i){x.hidden=false;x.style.visibility=i===tab?'':'hidden'});
  r.classList.toggle('c1',document.querySelector('.app').clientHeight<780);
- var lv=[[],['tight'],['tight','notv']];
- function bad(){return p.scrollHeight>p.clientHeight+1||q.scrollHeight>q.clientHeight+1||$('tape').clientHeight<96}
+ var land=r.classList.contains('land');
+ var lv=land?[['notv'],['tight','notv']]:[[],['tight'],['tight','notv']];
+ function above(el){return el.getBoundingClientRect().top<el.parentNode.getBoundingClientRect().top-1}
+ function bad(){return p.scrollHeight>p.clientHeight+1||q.scrollHeight>q.clientHeight+1||$('tape').clientHeight<(land?60:96)||
+  above(p.querySelector('.kp'))||above($('inp'))}
  function apply(c){ALLC.forEach(function(x){r.classList.toggle(x,c.indexOf(x)>=0)});renderConv();renderSum()}
  function best(){for(var k=58;k>=44;k-=2){r.style.setProperty('--kh',k+'px');if(!bad())return k}return 0}
  var pick=null;
@@ -579,4 +652,6 @@ fitH();addEventListener('resize',function(){fitH();fitLayout()});
 // Każda zmiana dostępnej wysokości (obrót, pasek Safari, rozmiar tekstu) = ponowne dopasowanie.
 if(window.ResizeObserver){var _rf=0;new ResizeObserver(function(){cancelAnimationFrame(_rf);_rf=requestAnimationFrame(fitLayout)}).observe(document.querySelector('.app'))}
 tvLocal();renderAll();setTab(tab,false);load();
+// Tryb offline: service worker trzyma kopię apki.
+if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('sw.js').catch(function(){});
 </script></body></html>

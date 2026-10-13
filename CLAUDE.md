@@ -34,6 +34,8 @@ Rynkowy/Ściemokurs i przycisk odświeżania są wspólne dla obu. Ostatnia kart
 - Suma duża w wybranej walucie, pozostałe dwie jako kapsuły; stuknięcie kapsuły zmienia walutę sumy.
   Przytrzymanie sumy = kopiuj.
 - Lista pozycji (szklana lista zgrupowana, najnowsze na górze): przesunięcie w lewo odsłania „Usuń”. „Wyczyść” wymaga drugiego stuknięcia („Wyczyścić wszystko?”).
+  Po usunięciu i wyczyszczeniu toast z „Cofnij” (4,5 s).
+- Kwoty w Sumie zawsze z 2 miejscami (`fmtS`), kapsuły walut przy braku miejsca tracą flagi, potem zmniejszają się.
 - Pozycje zapisane w localStorage (`items`), przeliczane bieżącym kursem i trybem (ściemokurs też).
 - Liczby zawsze grupowane spacją (także 4-cyfrowe: „1 050”), żeby wynik wyglądał jak wpisywana kwota.
 
@@ -44,15 +46,29 @@ Rynkowy/Ściemokurs i przycisk odświeżania są wspólne dla obu. Ostatnia kart
   EUR/PLN zostaje rynkowy. SR ustawiany w arkuszu (stuknij „Zmień” przy kursie albo ponownie aktywny segment
   „Ściemokurs”): −/+ (przytrzymanie powtarza), szybkie 90 / 95 / 100, zakres 50–150, zapis w localStorage `sr`.
   Arkusz pokazuje przykład 2000 ALL w EUR po ściemie i rynkowo. Widać też kurs rynkowy dla porównania.
-- Kurs z `https://open.er-api.com/v6/latest/EUR` (ma ALL i CORS; EBC/Frankfurter nie mają ALL).
-  Fallback wbudowany + ostatni kurs w localStorage. Auto-odświeżanie po >6 h przy powrocie do apki.
-  Kropka statusu: zielona = świeży, pomarańczowa = stary/przybliżony.
+- Kurs: `open.er-api.com` → rezerwowo currency-api z jsDelivr (`@fawazahmed0/currency-api`) → `latest.currency-api.pages.dev`
+  (wszystkie z ALL i CORS, bez klucza; EBC/Frankfurter nie mają ALL). Potem ostatni zapisany kurs (localStorage),
+  na końcu wbudowany (13.10.2026: 1 EUR = 91,55 ALL = 4,387 PLN). Auto-odświeżanie po >6 h przy powrocie do apki,
+  ręczne odświeżenie pokazuje komunikat. Status: „Kurs: dziś, 02:02” / „wczoraj” / data; kropka zielona = świeży,
+  pomarańczowa = starszy niż 3 dni albo przybliżony.
+- Gest jak w Kalkulatorze: przesunięcie palcem w poziomie po wyświetlaczu (wiersze walut / pole wpisywania Sumy)
+  usuwa ostatnią cyfrę.
 - **Ciekawostki o Albanii**: 68 ręcznie napisanych (tasowane bez powtórzeń) + co 5. karta losowy fragment
   z polskiej Wikipedii. Karta przypięta nad klawiaturą, stała wysokość (3 linie; 2 w trybie zwartym;
   ukryta, gdy inaczej klawisze musiałyby być mniejsze niż 52 pt).
   Nowe ciekawostki dopisuj tylko, gdy są pewne faktograficznie.
 - Ikona: `apple-touch-icon.png` (180 px) renderowana z `icon.svg` (bunkier-skarbonka z monetą €).
   Po zmianie ikony podbij `?v=N` w `<link rel="apple-touch-icon">`; iOS i tak wymaga ponownego dodania do ekranu.
+
+## PWA: offline, manifest, ekrany startowe
+
+- `sw.js`: strona najpierw z sieci (limit 2,5 s), offline z pamięci; pliki statyczne z pamięci z odświeżaniem w tle;
+  zapytania o kurs (inne domeny) nie są przechwytywane. Podbij `V` w `sw.js`, gdy zmieniasz listę `SHELL`.
+  Rejestracja tylko na https/localhost. Test offline: `python3 -m http.server` + Playwright `context.set_offline(True)`.
+- `manifest.json` (+ `icon-192.png`, `icon-512.png` z `icon.svg`).
+- `splash/*.png`: ekrany startowe = tło apki z poświatą (bez UI, żeby nic nie skakało przy starcie), jasne i ciemne,
+  dla 11 rozmiarów iPhone'ów; generowane numpy (bez szumu, ~60 KB). Nowy rozmiar iPhone'a = dopisz do listy i `<link>`.
+- Poziomo (`.land`): treść w lewej połowie, klawiatura (i pole wpisywania Sumy) przypięte w prawej, ciekawostki ukryte.
 
 ## Pułapki iOS (już rozwiązane, nie psuj)
 
@@ -74,7 +90,7 @@ Rynkowy/Ściemokurs i przycisk odświeżania są wspólne dla obu. Ostatnia kart
 
 1. Składnia JS: `node -e "new Function(...skrypt z index.html...)"`.
 2. `python3 tools/realtest.py` (z katalogu repo): symuluje realne iPhone'y w trybie apki (16 Pro 393×791 z wyspą 59 pt,
-   SE 375×667 z paskiem 20 pt, Pro Max 440×895), jasny i ciemny, **obie karty**; wypisuje elementy wchodzące pod
+   SE 375×667 z paskiem 20 pt, Pro Max 440×895, 16 Pro poziomo 852×372), jasny i ciemny, **obie karty**; wypisuje elementy wchodzące pod
    pasek kart (`over` musi być puste).
    Zrzuty trafiają do /tmp/r_*.png. Obejrzyj je: nic nie może być ucięte ani zasłonięte, klawiatura i pasek kart całe widoczne.
    W Sumie przetestuj dodawanie w różnych walutach, odejmowanie, usuwanie przesunięciem i sprawdź sumę rachunkiem.
