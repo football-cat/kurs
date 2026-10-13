@@ -18,7 +18,7 @@
  --red:rgba(228,30,32,.22);--blu:rgba(0,122,255,.10);--o1:rgba(255,149,0,.30);--o2:rgba(255,59,48,.12);
  --sys:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",system-ui,sans-serif;
  --disp:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",system-ui,sans-serif;
- --kh:min(57px,7.3dvh);
+ --kh:58px;
 }
 @media (prefers-color-scheme:dark){:root{
  --bg:#000;--fg:#fff;--sec:rgba(235,235,245,.6);--ter:rgba(235,235,245,.3);--sep:rgba(84,84,88,.6);
@@ -61,7 +61,7 @@ body.scam #mode button[data-m="1"]{color:var(--org)}
 .ib.spin svg{animation:sp .8s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
 
 .panes{position:relative;flex:1;min-height:0}
-.pane{position:absolute;inset:0;display:flex;flex-direction:column}
+.pane{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden}
 .pane[hidden]{display:none}
 .pane.in{animation:pin .32s cubic-bezier(.3,1.2,.5,1)}
 @keyframes pin{from{opacity:0;transform:translateX(calc(var(--dx,1) * 18px))}}
@@ -107,25 +107,24 @@ body.scam #mode button[data-m="1"]{color:var(--org)}
 .chip{height:32px;padding:0 12px;border-radius:16px;font-size:15px;font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:6px}
 .chip .fl{font-size:15px}
 
-.th2{flex:none;display:flex;justify-content:space-between;align-items:center;padding:10px 20px 4px;font-size:13px;color:var(--sec);min-height:34px}
+.th2{flex:none;display:flex;justify-content:space-between;align-items:center;padding:8px 20px 4px;font-size:13px;color:var(--sec);min-height:34px}
 .th2 button{font-size:15px;color:var(--acc);padding:4px 0 4px 12px;transition:color .2s}
 .th2 button.cf{color:var(--del);font-weight:600}
-.tape{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;padding:0 16px;
- -webkit-mask-image:linear-gradient(transparent,#000 14px);mask-image:linear-gradient(transparent,#000 14px)}
-.empty{height:100%;display:grid;place-items:center;text-align:center;padding:0 32px;font-size:15px;line-height:1.45;color:var(--sec)}
+.tape{flex:1;min-height:0;margin:0 16px;border-radius:22px;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y}
+.empty{height:100%;display:grid;place-items:center;text-align:center;padding:12px 28px;font-size:15px;line-height:1.45;color:var(--sec)}
 .ent{position:relative;overflow:hidden}
-.ent+.ent::before{content:"";position:absolute;top:0;left:4px;right:4px;height:.5px;background:var(--sep)}
+.ent+.ent::before{content:"";position:absolute;z-index:1;top:0;left:16px;right:0;height:.5px;background:var(--sep)}
 /* Wiersz + ukryty przycisk „Usuń” po prawej, przesuwane razem (bez nieprzezroczystego tła pod tekstem). */
 .ent .tr{display:flex;width:calc(100% + 88px);transition:transform .3s cubic-bezier(.3,1.2,.5,1)}
 .ent.drag .tr{transition:none}
 .ent .del{flex:0 0 88px;background:var(--del);color:#fff;font-size:15px;font-weight:600;display:grid;place-items:center}
-.ent .in{flex:1;min-width:0;display:flex;align-items:baseline;gap:8px;padding:12px 4px}
+.ent .in{flex:1;min-width:0;display:flex;align-items:baseline;gap:8px;padding:12px 16px}
 .ent .a{font-size:17px;font-variant-numeric:tabular-nums}
 .ent .a.neg{color:var(--del)}
 .ent .c{font-size:13px;font-weight:600;color:var(--sec)}
 .ent .eq{margin-left:auto;font-size:15px;color:var(--sec);font-variant-numeric:tabular-nums;white-space:nowrap}
 .ent.new{animation:ein .35s cubic-bezier(.3,1.3,.5,1)}
-@keyframes ein{from{opacity:0;transform:translateY(14px) scale(.97)}}
+@keyframes ein{from{opacity:0;transform:translateY(-12px) scale(.97)}}
 .ent.out{transition:opacity .2s,max-height .25s .1s;max-height:0!important;opacity:0}
 
 .inp{flex:none;display:flex;align-items:center;gap:12px;padding:8px 16px 10px}
@@ -168,16 +167,15 @@ body #icur{--i:var(--ii,0)}
 .toast.on{opacity:1;transform:translate(-50%,0) scale(1)}
 #hp{position:absolute;left:-99px;opacity:0;pointer-events:none}
 
-@media (max-height:700px){
- :root{--kh:min(50px,7.4dvh)}
- header{padding-top:4px}
- .cur{min-height:44px}.cur .num{font-size:28px}.meta{padding-top:8px}
- .tv{margin-bottom:10px;padding:9px 14px 10px}.tv p{height:calc(2 * 1.4em);-webkit-line-clamp:2}
- .kp{gap:8px 12px}
- .tabs{height:52px;border-radius:26px}.tabs .th{border-radius:22px}.tabs svg{width:22px;height:22px}
- .big .num{font-size:50px}.inp{padding:6px 16px 8px}.inp .v{font-size:30px}.th2{padding-top:6px}
-}
-@media (max-height:600px){.tv{display:none}}
+/* Układ dopasowywany w JS (fitLayout) do faktycznej wysokości, z uwzględnieniem wyspy i paska Home. */
+.c1 header{padding-top:2px;padding-bottom:4px}
+.tight .disp{padding-top:2px}
+.tight .cur{min-height:42px}.tight .cur .num{font-size:28px}.tight .meta{padding-top:6px}
+.tight .tv{margin-bottom:10px;padding:9px 14px 10px}.tight .tv p{height:calc(2 * 1.4em);-webkit-line-clamp:2}
+.tight .kp{gap:8px 12px}
+.c1 .tabs{height:52px;border-radius:26px}.c1 .tabs .th{border-radius:22px}.c1 .tabs svg{width:22px;height:22px}
+.tight .big .num{font-size:48px}.tight .inp{padding:6px 16px 8px}.tight .inp .v{font-size:30px}.tight .th2{padding-top:4px;min-height:30px}
+.notv .tv{display:none}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 </style></head><body>
 <div class="amb" aria-hidden="true"><i class="r"></i><i class="o"></i></div>
@@ -215,11 +213,11 @@ body #icur{--i:var(--ii,0)}
   <!-- Suma -->
   <section class="pane" id="p1" aria-label="Suma" hidden>
    <div class="tot">
-    <div class="big" id="big"><div class="lab">Suma</div><div class="num" id="sBig"></div><div class="cc" id="sCc"></div></div>
+    <div class="big" id="big" aria-label="Suma"><div class="num" id="sBig"></div><div class="cc" id="sCc"></div></div>
     <div class="alt" id="alt"></div>
    </div>
    <div class="th2" id="th2"><span id="cnt"></span><button id="clr">Wyczyść</button></div>
-   <div class="tape" id="tape"></div>
+   <div class="tape glass" id="tape"></div>
    <div class="inp" id="inp">
     <div class="seg" id="icur" role="tablist" aria-label="Waluta pozycji">
      <i class="th" aria-hidden="true"></i>
@@ -267,7 +265,7 @@ function n(v,d){return v.toLocaleString('pl-PL',{maximumFractionDigits:d})}
 // Dopasowanie rozmiaru liczby do szerokości (jak wyświetlacz Kalkulatora).
 function fit(el,max,min){var s=max;el.style.fontSize=s+'px';
  while(el.scrollWidth>el.clientWidth+1&&s>min){s-=2;el.style.fontSize=s+'px'}}
-var sm=function(){return innerHeight<=700};
+var sm=function(){return document.documentElement.classList.contains('tight')};
 function haptic(){try{$('hp').click()}catch(e){}}
 function toast(t){var e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(function(){e.classList.remove('on')},1500)}
 function copy(txt,label){var p=navigator.clipboard&&navigator.clipboard.writeText(txt.replace(/[\s ]/g,''));
@@ -297,7 +295,7 @@ function renderConv(){
   el.parentNode.classList.toggle('on',on);
   if(on){el.textContent=cv.buf?showBuf(cv.buf):'0';el.classList.toggle('ph',!cv.buf)}
   else{el.textContent=isNaN(v)?'0':fmt(conv(v,cv.act,c),c);el.classList.toggle('ph',isNaN(v))}
-  if(tab===0)fit(el,on?(sm()?54:66):(sm()?28:32),on?30:18)});
+  fit(el,on?(sm()?54:66):(sm()?28:32),on?30:18)});
  ls('buf',cv.buf);ls('act',cv.act)}
 function selectConv(c){if(c===cv.act)return;var v=num(cv.buf);
  cv.buf=isNaN(v)?'':fmt(conv(v,cv.act,c),c).replace(/[\s ]/g,'');
@@ -319,7 +317,7 @@ function renderSum(bumpBig){
  var t=total(su.tot),el=$('sBig');
  el.textContent=fmt(t,su.tot).replace('-','−');el.classList.toggle('ph',!su.items.length);
  $('sCc').textContent=su.tot;
- if(tab===1)fit(el,sm()?50:60,26);
+ fit(el,sm()?50:60,26);
  if(bumpBig){var b=$('big');b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump')}
  $('alt').style.visibility=su.items.length?'visible':'hidden';
  $('alt').innerHTML=C.filter(function(c){return c!==su.tot}).map(function(c){
@@ -329,7 +327,7 @@ function renderSum(bumpBig){
  $('cnt').textContent=nI?nI+' '+(nI===1?'pozycja':(nI%10>=2&&nI%10<=4&&(nI%100<10||nI%100>=20))?'pozycje':'pozycji'):'';
  $('clr').style.visibility=nI?'visible':'hidden';
  $('iv').textContent=su.buf?showBuf(su.buf):'0';$('iv').classList.toggle('ph',!su.buf);
- if(tab===1)fit($('iv'),sm()?30:34,20);
+ fit($('iv'),sm()?30:34,20);
  $('icur').style.setProperty('--ii',C.indexOf(su.cur));
  $('icur').querySelectorAll('button').forEach(function(b){b.setAttribute('aria-selected',String(b.dataset.c===su.cur))});
  ls('items',JSON.stringify(su.items));ls('icur',su.cur);ls('tcur',su.tot)}
@@ -339,8 +337,8 @@ function renderTape(newId){
  var tp=$('tape');
  if(!su.items.length){tp.innerHTML='<div class="empty">Wpisz kwotę i stuknij +, żeby dodać ją do sumy. Każda pozycja może być w innej walucie, a − odejmuje.</div>';return}
  tp.innerHTML='';
- su.items.forEach(function(e){var d=document.createElement('div');d.className='ent'+(e.id===newId?' new':'');d.dataset.id=e.id;d.innerHTML=rowHTML(e);tp.appendChild(d);swipe(d)});
- tp.scrollTop=tp.scrollHeight}
+ su.items.slice().reverse().forEach(function(e){var d=document.createElement('div');d.className='ent'+(e.id===newId?' new':'');d.dataset.id=e.id;d.innerHTML=rowHTML(e);tp.appendChild(d);swipe(d)});
+ tp.scrollTop=0}
 // Przesunięcie w lewo odsłania „Usuń” (jak w Wiadomościach/Poczcie).
 var openRow=null;
 function setX(d,x){d.querySelector('.tr').style.transform=x?'translateX('+x+'px)':''}
@@ -383,7 +381,7 @@ function renderMeta(){
   '1 EUR = <b>'+n(A,2)+' ALL</b> = <b>'+n(R.PLN,4)+' PLN</b>, 1 PLN = <b>'+n(A/R.PLN,2)+' ALL</b>';
  document.body.classList.toggle('scam',scam);
  $('mode').querySelectorAll('button').forEach(function(b){b.setAttribute('aria-selected',String((b.dataset.m==='1')===scam))})}
-function renderAll(){renderMeta();renderConv();renderSum();renderTape()}
+function renderAll(){renderMeta();renderConv();renderSum();renderTape();if(window.fitLayout)fitLayout()}
 function setTab(t,anim){tab=t;ls('tab',String(t));
  [0,1].forEach(function(i){var p=$('p'+i);p.hidden=i!==t;p.classList.remove('in');
   if(i===t&&anim){p.style.setProperty('--dx',t?1:-1);void p.offsetWidth;p.classList.add('in')}});
@@ -503,6 +501,28 @@ setInterval(function(){if(!document.hidden&&tab===0)tvNext()},25000);
 // iOS 26 (apka z ekranu początkowego): strona kończy się nad paskiem Home, a safe-area i tak zwraca ~34px.
 function fitH(){var s=navigator.standalone,full=Math.max(screen.height,screen.width),p=innerHeight>=innerWidth;
  document.documentElement.classList.toggle('gap',!!(s&&p&&full-innerHeight>20))}
-fitH();addEventListener('resize',function(){fitH();renderConv();renderSum()});
-tvLocal();setTab(tab,false);renderAll();load();
+// Gwarancja, że nic nie wchodzi pod pasek kart: dopasuj układ do realnej wysokości panelu.
+// Układ liczony zawsze dla karty Przelicz (najbardziej wymagającej), żeby klawiatura i nagłówek nie skakały
+// przy zmianie karty; w Sumie lista pozycji bierze resztę miejsca.
+// Zwarty nagłówek/pasek kart zależy od wysokości ekranu. Potem stopniowo: mniejszy wyświetlacz, bez ciekawostek.
+// Na każdym poziomie największe klawisze (58→44); bierzemy pierwszy poziom z klawiszami ≥ 52.
+function fitLayout(){var r=document.documentElement,p=$('p0'),q=$('p1'),ALLC=['tight','notv'];
+ // obie karty widoczne na czas pomiaru (nieaktywna niewidzialna)
+ [p,q].forEach(function(x,i){x.hidden=false;x.style.visibility=i===tab?'':'hidden'});
+ r.classList.toggle('c1',document.querySelector('.app').clientHeight<780);
+ var lv=[[],['tight'],['tight','notv']];
+ function bad(){return p.scrollHeight>p.clientHeight+1||q.scrollHeight>q.clientHeight+1||$('tape').clientHeight<96}
+ function apply(c){ALLC.forEach(function(x){r.classList.toggle(x,c.indexOf(x)>=0)});renderConv();renderSum()}
+ function best(){for(var k=58;k>=44;k-=2){r.style.setProperty('--kh',k+'px');if(!bad())return k}return 0}
+ var pick=null;
+ for(var i=0;i<lv.length;i++){apply(lv[i]);var k=best();if(k>=52){pick=[i,k];break}if(k&&(!pick||k>pick[1]))pick=[i,k]}
+ if(!pick)pick=[lv.length-1,44];
+ apply(lv[pick[0]]);r.style.setProperty('--kh',pick[1]+'px');
+ [p,q].forEach(function(x,i){x.hidden=i!==tab;x.style.visibility=''});
+ renderConv();renderSum()}
+var _st=setTab;setTab=function(t,a){_st(t,a);fitLayout()};
+fitH();addEventListener('resize',function(){fitH();fitLayout()});
+// Każda zmiana dostępnej wysokości (obrót, pasek Safari, rozmiar tekstu) = ponowne dopasowanie.
+if(window.ResizeObserver){var _rf=0;new ResizeObserver(function(){cancelAnimationFrame(_rf);_rf=requestAnimationFrame(fitLayout)}).observe(document.querySelector('.app'))}
+tvLocal();renderAll();setTab(tab,false);load();
 </script></body></html>

@@ -33,7 +33,7 @@ Rynkowy/Ściemokurs i przycisk odświeżania są wspólne dla obu. Ostatnia kart
 - Klawiatura: `1 2 3 C / 4 5 6 ⌫ / 7 8 9 − / 0 000 , +` (`+` w kolorze akcentu).
 - Suma duża w wybranej walucie, pozostałe dwie jako kapsuły; stuknięcie kapsuły zmienia walutę sumy.
   Przytrzymanie sumy = kopiuj.
-- Lista pozycji: przesunięcie w lewo odsłania „Usuń”. „Wyczyść” wymaga drugiego stuknięcia („Wyczyścić wszystko?”).
+- Lista pozycji (szklana lista zgrupowana, najnowsze na górze): przesunięcie w lewo odsłania „Usuń”. „Wyczyść” wymaga drugiego stuknięcia („Wyczyścić wszystko?”).
 - Pozycje zapisane w localStorage (`items`), przeliczane bieżącym kursem i trybem (ściemokurs też).
 - Liczby zawsze grupowane spacją (także 4-cyfrowe: „1 050”), żeby wynik wyglądał jak wpisywana kwota.
 
@@ -45,7 +45,8 @@ Rynkowy/Ściemokurs i przycisk odświeżania są wspólne dla obu. Ostatnia kart
   Fallback wbudowany + ostatni kurs w localStorage. Auto-odświeżanie po >6 h przy powrocie do apki.
   Kropka statusu: zielona = świeży, pomarańczowa = stary/przybliżony.
 - **Ciekawostki o Albanii**: 68 ręcznie napisanych (tasowane bez powtórzeń) + co 5. karta losowy fragment
-  z polskiej Wikipedii. Karta przypięta nad klawiaturą, stała wysokość (3 linie; 2 na niskich ekranach).
+  z polskiej Wikipedii. Karta przypięta nad klawiaturą, stała wysokość (3 linie; 2 w trybie zwartym;
+  ukryta, gdy inaczej klawisze musiałyby być mniejsze niż 52 pt).
   Nowe ciekawostki dopisuj tylko, gdy są pewne faktograficznie.
 - Ikona: `apple-touch-icon.png` (180 px) renderowana z `icon.svg` (bunkier-skarbonka z monetą €).
   Po zmianie ikony podbij `?v=N` w `<link rel="apple-touch-icon">`; iOS i tak wymaga ponownego dodania do ekranu.
@@ -57,12 +58,22 @@ Rynkowy/Ściemokurs i przycisk odświeżania są wspólne dla obu. Ostatnia kart
   zwraca ~34 px. Nie wymuszaj wysokości z `screen.height` (ucina klawiaturę). Używaj `position:fixed; inset:0`,
   klasa `.gap` zdejmuje dolny margines, a `html{background}` = tło strony, żeby pas pod spodem nie odstawał.
 - Clipboard w Safari tylko w handlerze zdarzenia (kopiowanie na `pointerup`, nie w `setTimeout`).
+- **Wyspa / pasek statusu zabiera ~59 pt u góry** (iPhone 14 Pro+), a strona w trybie apki kończy się nad paskiem
+  Home. Na iPhonie 16 Pro zostaje ok. 732 pt na całość. Zrzuty bez tej wstawki kłamią (tak powstał błąd, w którym
+  pasek kart zasłaniał dolny rząd klawiszy).
+- Układ jest dopasowywany w JS (`fitLayout`), nie media queries: pomiar karty Przelicz i Sumy naraz, wspólna
+  wysokość klawiszy `--kh` (58→44 pt) dla obu kart (klawiatura nie skacze przy przełączaniu), poziomy ustępstw:
+  `.c1` (zwarty nagłówek i pasek kart, gdy `.app` < 780 pt) → `.tight` (mniejszy wyświetlacz) → `.notv` (bez ciekawostek).
+  `.pane{overflow:hidden}` + `ResizeObserver` → nic nigdy nie wchodzi pod pasek kart. Nowe elementy dodawaj tak,
+  żeby `fitLayout` je uwzględniał.
 
 ## Przed każdym pushem
 
 1. Składnia JS: `node -e "new Function(...skrypt z index.html...)"`.
-2. Zrzuty Playwright (Chromium, `is_mobile`, `has_touch`): 390×786 jasny i ciemny, 375×647 (SE), **obie karty**.
-   Obejrzyj je: nic nie może być ucięte, klawiatura i pasek kart całe widoczne, ciekawostki widoczne.
+2. `python3 tools/realtest.py` (z katalogu repo): symuluje realne iPhone'y w trybie apki (16 Pro 393×791 z wyspą 59 pt,
+   SE 375×667 z paskiem 20 pt, Pro Max 440×895), jasny i ciemny, **obie karty**; wypisuje elementy wchodzące pod
+   pasek kart (`over` musi być puste).
+   Zrzuty trafiają do /tmp/r_*.png. Obejrzyj je: nic nie może być ucięte ani zasłonięte, klawiatura i pasek kart całe widoczne.
    W Sumie przetestuj dodawanie w różnych walutach, odejmowanie, usuwanie przesunięciem i sprawdź sumę rachunkiem.
 3. Commit po polsku, push na `main`. Pages publikuje sam w 1–2 min.
 
