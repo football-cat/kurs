@@ -24,7 +24,7 @@ zaprojektowana przez dobrego projektanta iOS (Apple HIG, iOS 26 / Liquid Glass).
 
 ## Funkcje (nie usuwaj bez pytania)
 
-Dwie karty w pływającym pasku kart na dole (kapsuła iOS 26): **Przelicz** i **Suma**. Przełącznik
+Trzy karty w pływającym pasku kart na dole (kapsuła iOS 26): **Przelicz**, **Suma** i **Notatnik**. Przełącznik
 Rynkowy/Ściemokurs i przycisk odświeżania są wspólne dla obu. Ostatnia karta zapamiętana w localStorage.
 
 **Suma** (kalkulator dodający, jak taśma maszyny liczącej):
@@ -38,6 +38,19 @@ Rynkowy/Ściemokurs i przycisk odświeżania są wspólne dla obu. Ostatnia kart
 - Kwoty w Sumie zawsze z 2 miejscami (`fmtS`), kapsuły walut przy braku miejsca tracą flagi, potem zmniejszają się.
 - Pozycje zapisane w localStorage (`items`), przeliczane bieżącym kursem i trybem (ściemokurs też).
 - Liczby zawsze grupowane spacją (także 4-cyfrowe: „1 050”), żeby wynik wyglądał jak wpisywana kwota.
+
+**Notatnik** (jak Soulver, klawiatura systemowa):
+- Linia = opis + kwota. Liczy się ostatnie wyrażenie w linii (`parseLine`): `pizza 3 × 800`, `taxi 500 + 300`,
+  `reszta -200` (minus przed liczbą odejmuje), `/` dzieli. Tysiące: `2 400`, `1.500`; przecinek = grosze.
+- Waluta w kapsule po prawej (menu jak w iOS: Lek / Złoty / Euro). `€`/`eur`, `zł`/`pln`, `lek`/`ALL` w tekście
+  przestawiają walutę linii; usunięcie znacznika wraca do waluty bazowej linii (`L.b`). Wybór z menu ustawia też
+  walutę domyślną nowych linii (`NT.def`, localStorage `ndef`).
+- Po prawej: kwota w walucie linii + przeliczenie na PLN (dla linii w PLN – na EUR). `#` na początku = nagłówek.
+- Enter dzieli linię w miejscu kursora, Backspace na początku łączy z poprzednią, stuknięcie pod listą = nowa linia.
+- Pasek na dole: sumy w użytych walutach (każda w osobnej linii) i razem w PLN. Ściemokurs działa też tu.
+- Udostępnij (tekst z kwotami i sumą, `navigator.share`), Wyczyść (drugie stuknięcie + Cofnij). Zapis w localStorage `notes`.
+- Przy otwartej klawiaturze (`.kbd`, `visualViewport`) apka kurczy się do widocznej części, pasek kart znika,
+  suma zostaje nad klawiaturą; `fitLayout` wtedy nic nie robi. Pola mają 17 px (iOS nie zoomuje przy ≥16 px).
 
 **Przelicz**:
 

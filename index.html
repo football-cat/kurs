@@ -179,12 +179,11 @@ body #icur{--i:var(--ii,0)}
 .kp svg{width:25px;height:25px}
 
 /* --- Pasek kart (iOS 26: pływająca kapsuła) --- */
-.tabs{flex:none;position:relative;display:grid;grid-template-columns:1fr 1fr;width:224px;height:58px;padding:4px;border-radius:29px;
+.tabs{flex:none;position:relative;display:grid;grid-template-columns:repeat(3,1fr);width:312px;height:58px;padding:4px;border-radius:29px;
  margin:2px auto calc(env(safe-area-inset-bottom) + 6px)}
 .gap .tabs{margin-bottom:8px}
-.tabs .th{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:25px;background:var(--seg);
+.tabs .th{position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 8px) / 3);transform:translateX(calc(100% * var(--ti,0)));border-radius:25px;background:var(--seg);
  transition:transform .4s cubic-bezier(.3,1.25,.5,1)}
-.tabs.t1 .th{transform:translateX(100%)}
 .tabs button{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11px;font-weight:600;transition:color .25s}
 .tabs button[aria-selected=true]{color:var(--acc)}
 .tabs svg{width:24px;height:24px}
@@ -227,6 +226,50 @@ body #icur{--i:var(--ii,0)}
 .c1 .tabs{height:52px;border-radius:26px}.c1 .tabs .th{border-radius:22px}.c1 .tabs svg{width:22px;height:22px}
 .tight .big .num{font-size:48px}.tight .inp{padding:6px 16px 8px}.tight .inp .v{font-size:30px}.tight .th2{padding-top:4px;min-height:30px}
 .notv .tv{display:none}
+/* --- Notatnik (jak Soulver): linia = opis + kwota, waluta w kapsule po prawej --- */
+.th3{flex:none;display:flex;align-items:center;gap:4px;padding:4px 20px 4px;min-height:36px;font-size:13px;color:var(--sec)}
+.th3 .cnt{flex:1}
+.th3 button{font-size:15px;color:var(--acc);padding:6px 0 6px 12px;transition:color .2s}
+.th3 button.cf{color:var(--del);font-weight:600}
+.th3 .shr{display:grid;place-items:center;padding:6px 6px 6px 12px}.th3 .shr svg{width:20px;height:20px}
+.nlist{flex:1;min-height:0;margin:0 16px;border-radius:22px;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;padding:2px 0}
+.nr{position:relative;display:flex;align-items:center;gap:8px;min-height:50px;padding:0 8px 0 16px}
+.nr+.nr::before{content:"";position:absolute;top:0;left:16px;right:0;height:.5px;background:var(--sep)}
+.nl{flex:1;min-width:0;border:0;outline:none;background:none;color:var(--fg);font:400 17px/1.25 var(--sys);padding:13px 0;
+ -webkit-user-select:text;user-select:text;-webkit-touch-callout:default;caret-color:var(--acc)}
+.nl::placeholder{color:var(--ter)}
+.nr.h .nl{font-weight:700;font-size:15px;color:var(--sec)}
+.nr.h .rv,.nr.h .cp{display:none}
+.rv{display:flex;flex-direction:column;align-items:flex-end;font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1.15}
+.ra{font-size:17px;font-weight:500}.ra.neg{color:var(--del)}
+.rp{font-size:12px;color:var(--sec)}
+.cp{flex:none;height:30px;padding:0 8px 0 10px;border-radius:15px;background:var(--seg);font-size:13px;font-weight:600;color:var(--acc);display:flex;align-items:center;gap:3px}
+.cp.off{color:var(--sec)}
+.cp svg{width:9px;height:9px}
+.nhint{padding:14px 16px 16px;font-size:13px;line-height:1.5;color:var(--sec)}
+.nhint b{font-weight:600;color:var(--fg)}
+.nsum{flex:none;margin:8px 16px 10px;padding:9px 16px 10px;border-radius:22px;display:flex;align-items:center;gap:12px}
+.nsum .l{font-size:13px;color:var(--sec);line-height:1.4;min-width:0;white-space:nowrap}
+.nsum .l b{color:var(--fg);font-weight:500;font-variant-numeric:tabular-nums}
+.nsum .t{margin-left:auto;text-align:right;white-space:nowrap}
+.nsum .t .v{font-family:var(--disp);font-size:28px;font-weight:300;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.nsum .t .c{font-size:15px;font-weight:600;color:var(--acc);margin-left:4px}
+.cmenu{position:fixed;z-index:30;min-width:230px;border-radius:18px;padding:6px;background:var(--sh);
+ -webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%);box-shadow:0 18px 50px rgba(0,0,0,.28);
+ transform-origin:top right;animation:mi .22s cubic-bezier(.3,1.3,.5,1)}
+.cmenu.up{transform-origin:bottom right}
+@keyframes mi{from{opacity:0;transform:scale(.85)}}
+.cmenu[hidden]{display:none}
+.cmenu button{display:flex;width:100%;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;font-size:17px;text-align:left}
+.cmenu button small{margin-left:auto;font-size:13px;font-weight:600;color:var(--sec)}
+.cmenu button[aria-checked=true]{color:var(--acc);font-weight:600}
+.cmenu button[aria-checked=true] small{color:var(--acc)}
+.cmenu button:active{background:var(--seg)}
+/* Klawiatura systemowa otwarta (tylko Notatnik): bez paska kart, apka kończy się nad klawiaturą */
+.kbd .tabs{display:none}
+.kbd header{padding-top:2px;padding-bottom:2px}
+.kbd .nsum{margin-bottom:6px}
+.land #p2>*{width:auto}
 /* Poziomo: treść po lewej połowie, klawiatura (i pole wpisywania Sumy) przypięte w prawej połowie. */
 .land .app{max-width:860px}
 .land .pane>*{width:50%}
@@ -295,13 +338,28 @@ body #icur{--i:var(--ii,0)}
     <button class="glass ac op" data-k="+" aria-label="Dodaj do sumy">+</button>
    </div>
   </section>
+
+  <!-- Notatnik -->
+  <section class="pane" id="p2" aria-label="Notatnik" hidden>
+   <div class="th3"><span class="cnt" id="ncnt"></span>
+    <button class="shr" id="nshare" aria-label="Udostępnij notatnik"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg></button>
+    <button id="nclr">Wyczyść</button></div>
+   <div class="nlist glass" id="nlist"></div>
+   <div class="nsum glass" id="nsum" aria-live="polite"><div class="l" id="nsub"></div><div class="t"><span class="v" id="ntot"></span><span class="c">PLN</span></div></div>
+  </section>
  </div>
 
  <nav class="tabs glass" id="tabs" role="tablist" aria-label="Widok">
   <i class="th" aria-hidden="true"></i>
   <button role="tab" data-t="0" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h15m0 0-4-4m4 4-4 4M20 16H5m0 0 4-4m-4 4 4 4"/></svg>Przelicz</button>
   <button role="tab" data-t="1" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-2-1.4-2 1.4-2-1.4-2 1.4-2-1.4L6 21z"/><path d="M9.5 8h5M9.5 12h5M9.5 16h3"/></svg>Suma</button>
+  <button role="tab" data-t="2" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h11M4 11h8M4 16h5"/><path d="M14.2 20.3 20.6 14l-2.1-2.1-6.4 6.3-.6 2.7z"/></svg>Notatnik</button>
  </nav>
+ <div class="cmenu" id="cmenu" role="menu" hidden>
+  <button role="menuitemradio" data-c="ALL">🇦🇱 Lek<small>ALL</small></button>
+  <button role="menuitemradio" data-c="PLN">🇵🇱 Złoty<small>PLN</small></button>
+  <button role="menuitemradio" data-c="EUR">🇪🇺 Euro<small>EUR</small></button>
+ </div>
 </div>
 <div class="dim" id="dim"></div>
 <div class="sheet glass" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shT" aria-hidden="true">
@@ -326,7 +384,7 @@ var R=FB,C=['ALL','PLN','EUR'],FL={ALL:'🇦🇱',PLN:'🇵🇱',EUR:'🇪🇺'}
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
 function lj(k){try{return JSON.parse(ls(k))}catch(e){return null}}
 var c0=lj('kurs');if(c0&&c0.PLN&&c0.ALL)R=c0;
-scam=ls('scam')==='1';tab=ls('tab')==='1'?1:0;
+scam=ls('scam')==='1';tab=+ls('tab');if(!(tab>=0&&tab<=2))tab=0;
 // Kurs „ściemy”: ile leków liczą za 1 EUR (domyślnie 90, ustawialny 50–150).
 var SR=+ls('sr');if(!(SR>=50&&SR<=150))SR=90;
 function $(i){return document.getElementById(i)}
@@ -468,6 +526,125 @@ $('clr').addEventListener('click',function(){var b=$('clr');haptic();
 $('iv')._swipe=function(){haptic();keySum('B')};longPress($('iv'));
 longPress($('big'),function(){copy($('sBig').textContent,$('sBig').textContent+' '+su.tot)});
 
+/* ===== Notatnik (jak Soulver) =====
+   Linia = dowolny opis + kwota. Liczy się ostatnie wyrażenie w linii: „pizza 3 × 800”, „taxi 500 + 300”,
+   „reszta -500”. Waluta w kapsule po prawej; wpisanie „€”, „eur”, „zł”, „pln”, „lek” przestawia ją samo.
+   Linia zaczynająca się od # to nagłówek (nie liczy się). Nowa linia dziedziczy walutę poprzedniej. */
+var NUM='(?:\\d{1,3}(?:[ \\u00a0\\u202f]\\d{3})+|\\d+)(?:[.,]\\d+)?';
+var EXPR=new RegExp(NUM+'(?:\\s*[+\\-−x×*/]\\s*'+NUM+')*','g');
+var CUR_RE=[['EUR',/€|\beur(?:o|a|ów|ach)?\b/i],['PLN',/zł|\bpln\b|złot/i],['ALL',/\blek(?:ów|i|u|e|ach)?\b|\bALL\b/]];
+function pnum(x){x=x.replace(/[   ]/g,'');var m=x.match(/^(\d+)\.(\d{3})$/);if(m)return +(m[1]+m[2]);return parseFloat(x.replace(',','.'))}
+function parseLine(t){
+ if(/^\s*#/.test(t))return {h:1,v:null};
+ var last=null,m;EXPR.lastIndex=0;while((m=EXPR.exec(t))){last=m;if(!m[0].length)EXPR.lastIndex++}
+ var cur=null;for(var i=0;i<CUR_RE.length;i++)if(CUR_RE[i][1].test(t)){cur=CUR_RE[i][0];break}
+ if(!last)return {v:null,cur:cur};
+ var parts=last[0].split(/\s*([+\-−x×*/])\s*/),nums=[],ops=[];
+ for(i=0;i<parts.length;i++){if(i%2)ops.push(parts[i]);else nums.push(pnum(parts[i]))}
+ var vals=[nums[0]],aops=[];
+ for(i=0;i<ops.length;i++){var o=ops[i],b=nums[i+1];
+  if(/[x×*]/.test(o))vals[vals.length-1]*=b;else if(o==='/')vals[vals.length-1]=b?vals[vals.length-1]/b:NaN;else{aops.push(o);vals.push(b)}}
+ var v=vals[0];for(i=0;i<aops.length;i++)v=aops[i]==='+'?v+vals[i+1]:v-vals[i+1];
+ if(/(^|\s)[-−]\s*$/.test(t.slice(0,last.index)))v=-v;
+ return {v:isFinite(v)?v:null,cur:cur,ops:ops.length>0}}
+// NT.def = waluta domyślna nowych linii (ostatnio wybrana z menu); L.b = waluta bazowa linii, L.tk = waluta z tekstu.
+var NT={lines:lj('notes'),uid:Date.now(),def:C.indexOf(ls('ndef'))>=0?ls('ndef'):'ALL'};
+if(!Array.isArray(NT.lines)||!NT.lines.length)NT.lines=[{id:1,t:'',c:NT.def,b:NT.def}];
+function saveNotes(){ls('notes',JSON.stringify(NT.lines))}
+function lineOf(d){var id=+d.dataset.id;return NT.lines.find(function(L){return L.id===id})}
+function plural(n,a,b,c){return n===1?a:(n%10>=2&&n%10<=4&&(n%100<10||n%100>=20))?b:c}
+function updRow(d,L){var p=parseLine(L.t),has=p.v!=null;
+ d.classList.toggle('h',!!p.h);
+ var ra=d.querySelector('.ra');ra.textContent=has?fmtS(p.v,L.c).replace('-','−'):'';ra.classList.toggle('neg',has&&p.v<0);
+ var alt=L.c==='PLN'?'EUR':'PLN';
+ d.querySelector('.rp').textContent=has?fmtS(conv(p.v,L.c,alt),alt).replace('-','−')+' '+alt:'';
+ var cp=d.querySelector('.cp');cp.firstChild.textContent=L.c;cp.classList.toggle('off',!has);
+ cp.setAttribute('aria-label','Waluta linii: '+L.c)}
+function rowEl(L,i){var d=document.createElement('div');d.className='nr';d.dataset.id=L.id;
+ d.innerHTML='<input class="nl" type="text" enterkeyhint="next" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Linia notatnika">'+
+  '<div class="rv"><span class="ra"></span><span class="rp"></span></div>'+
+  '<button class="cp" aria-haspopup="menu"><span></span><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m2 4 3 3 3-3"/></svg></button>';
+ var inp=d.querySelector('.nl');inp.value=L.t;
+ inp.addEventListener('input',function(){var L=lineOf(d);L.t=inp.value;var p=parseLine(L.t);
+  if(p.cur){if(p.cur!==L.tk)L.c=p.cur}else if(L.tk)L.c=L.b||NT.def;L.tk=p.cur||null;updRow(d,L);renderNoteSum();saveNotes()});
+ inp.addEventListener('keydown',function(e){var L=lineOf(d),i=NT.lines.indexOf(L);
+  if(e.key==='Enter'){e.preventDefault();var pos=inp.selectionStart||0,right=L.t.slice(pos);
+   L.t=L.t.slice(0,pos);inp.value=L.t;updRow(d,L);
+   var N={id:++NT.uid,t:right,c:NT.def,b:NT.def,tk:null};NT.lines.splice(i+1,0,N);
+   var nd=rowEl(N);d.after(nd);var ni=nd.querySelector('.nl');ni.focus();try{ni.setSelectionRange(0,0)}catch(_){}
+   afterLines();return}
+  if(e.key==='Backspace'&&inp.selectionStart===0&&inp.selectionEnd===0&&i>0){e.preventDefault();
+   var P=NT.lines[i-1],pl=P.t.length;P.t+=L.t;NT.lines.splice(i,1);
+   var pd=d.previousElementSibling;d.remove();var pi=pd.querySelector('.nl');pi.value=P.t;updRow(pd,P);
+   pi.focus();try{pi.setSelectionRange(pl,pl)}catch(_){}afterLines()}});
+ inp.addEventListener('focus',function(){setTimeout(function(){d.scrollIntoView({block:'nearest'})},320)});
+ var cp=d.querySelector('.cp');
+ cp.addEventListener('pointerdown',function(e){e.preventDefault()}); // nie zabieraj fokusu (klawiatura zostaje)
+ cp.addEventListener('click',function(e){e.stopPropagation();haptic();openMenu(cp,lineOf(d),d)});
+ updRow(d,L);return d}
+function placeholders(){var rows=$('nlist').querySelectorAll('.nl');
+ rows.forEach(function(x,i){x.placeholder=i===0?'np. obiad w Durrës 2400':''})}
+function renderNoteSum(){var tot=0,n=0,sub={};
+ NT.lines.forEach(function(L){var p=parseLine(L.t);if(p.v==null)return;n++;tot+=conv(p.v,L.c,'PLN');sub[L.c]=(sub[L.c]||0)+p.v});
+ var el=$('ntot');el.textContent=fmtS(tot,'PLN').replace('-','−');el.classList.toggle('ph',!n);
+ var used=C.filter(function(c){return sub[c]!=null});
+ // po lewej sumy w walutach, w których coś wpisano (każda w osobnej linii); po prawej razem w złotówkach
+ $('nsub').innerHTML=n&&(used.length>1||used[0]!=='PLN')?used.map(function(c){return '<b>'+fmtS(sub[c],c).replace('-','−')+'</b> '+c}).join('<br>'):'Razem';
+ $('ncnt').textContent=n?n+' '+plural(n,'kwota','kwoty','kwot'):'';
+ var any=NT.lines.some(function(L){return L.t});$('nclr').style.visibility=$('nshare').style.visibility=any?'visible':'hidden'}
+function afterLines(){placeholders();renderNoteSum();saveNotes();
+ var h=$('nhint');var empty=NT.lines.length===1&&!NT.lines[0].t;if(h)h.hidden=!empty}
+function buildNotes(){var l=$('nlist');l.innerHTML='';
+ NT.lines.forEach(function(L){l.appendChild(rowEl(L))});
+ var h=document.createElement('div');h.className='nhint';h.id='nhint';
+ h.innerHTML='Każda linia to pozycja: opis i kwota, waluta w kapsule po prawej. Działa też <b>3 × 800</b>, <b>500 + 300</b> i <b>-200</b> (odejmuje). Wpisz <b>€</b>, <b>zł</b> albo <b>lek</b>, żeby zmienić walutę. Linia z <b>#</b> to nagłówek.';
+ l.appendChild(h);afterLines()}
+function renderNotes(){$('nlist').querySelectorAll('.nr').forEach(function(d){var L=lineOf(d);if(L)updRow(d,L)});renderNoteSum()}
+// stuknięcie pod ostatnią linią = pisz dalej (nowa linia, jeśli ostatnia nie jest pusta)
+$('nlist').addEventListener('click',function(e){if(e.target!==$('nlist')&&e.target.id!=='nhint')return;
+ var last=NT.lines[NT.lines.length-1],rows=$('nlist').querySelectorAll('.nr'),ld=rows[rows.length-1];
+ if(last.t){var N={id:++NT.uid,t:'',c:NT.def,b:NT.def,tk:null};NT.lines.push(N);ld.after(ld=rowEl(N));afterLines()}
+ ld.querySelector('.nl').focus()});
+// Menu waluty (jak menu kontekstowe iOS)
+var menuFor=null;
+function openMenu(btn,L,d){var m=$('cmenu');if(menuFor===d&&!m.hidden){closeMenu();return}
+ menuFor=d;m.hidden=false;m.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-checked',String(b.dataset.c===L.c))});
+ var r=btn.getBoundingClientRect(),mh=m.offsetHeight,up=r.bottom+8+mh>innerHeight-8;
+ m.classList.toggle('up',up);m.style.right=Math.max(8,innerWidth-r.right)+'px';
+ m.style.top=(up?r.top-8-mh:r.bottom+8)+'px'}
+function closeMenu(){var m=$('cmenu');if(m)m.hidden=true;menuFor=null}
+$('cmenu').querySelectorAll('button').forEach(function(b){
+ b.addEventListener('pointerdown',function(e){e.preventDefault()});
+ b.addEventListener('click',function(){if(!menuFor)return;var L=lineOf(menuFor);L.c=L.b=NT.def=b.dataset.c;ls('ndef',NT.def);haptic();
+  updRow(menuFor,L);renderNoteSum();saveNotes();closeMenu()})});
+document.addEventListener('pointerdown',function(e){if(menuFor&&!e.target.closest('#cmenu')&&!e.target.closest('.cp'))closeMenu()});
+// Wyczyść (drugie stuknięcie) z Cofnij
+var nclrT;
+$('nclr').addEventListener('click',function(){var b=$('nclr');haptic();
+ if(!b.classList.contains('cf')){b.classList.add('cf');b.textContent='Wyczyścić wszystko?';clearTimeout(nclrT);
+  nclrT=setTimeout(function(){b.classList.remove('cf');b.textContent='Wyczyść'},3000);return}
+ clearTimeout(nclrT);b.classList.remove('cf');b.textContent='Wyczyść';var bak=NT.lines;
+ NT.lines=[{id:++NT.uid,t:'',c:NT.def,b:NT.def}];buildNotes();
+ toast('Wyczyszczono notatnik','Cofnij',function(){NT.lines=bak;buildNotes()})});
+// Udostępnij: tekst notatnika z kwotami i sumą (np. do podziału rachunku)
+$('nshare').addEventListener('click',function(){haptic();var out=[],tot=0;
+ NT.lines.forEach(function(L){if(!L.t.trim())return;var p=parseLine(L.t);
+  if(p.v==null){out.push(L.t);return}tot+=conv(p.v,L.c,'PLN');
+  out.push(L.t.replace(/\s+$/,'')+(p.ops||!L.tk?'  → '+fmtS(p.v,L.c)+' '+L.c:'')+(L.c!=='PLN'?' ('+fmtS(conv(p.v,L.c,'PLN'),'PLN')+' PLN)':''))});
+ out.push('','Razem: '+fmtS(tot,'PLN')+' PLN'+(scam?' (ściemokurs 1 EUR = '+SR+' ALL)':''));
+ var txt=out.join('\n');
+ if(navigator.share)navigator.share({text:txt}).catch(function(){});
+ else if(navigator.clipboard)navigator.clipboard.writeText(txt).then(function(){toast('Skopiowano notatnik')},function(){toast('Nie udało się skopiować')})});
+buildNotes();
+
+// Klawiatura systemowa: apka kurczy się do widocznej części ekranu, suma zostaje nad klawiaturą.
+function kbFit(){var v=window.visualViewport;if(!v)return;var a=document.activeElement,ed=a&&a.classList&&a.classList.contains('nl');
+ var on=!!(ed&&innerHeight-v.height>120),r=document.documentElement,b=document.body;
+ r.classList.toggle('kbd',on);
+ if(on){b.style.top=v.offsetTop+'px';b.style.height=v.height+'px';b.style.bottom='auto'}else{b.style.top='';b.style.height='';b.style.bottom=''}}
+if(window.visualViewport){visualViewport.addEventListener('resize',kbFit);visualViewport.addEventListener('scroll',kbFit)}
+document.addEventListener('focusin',kbFit);document.addEventListener('focusout',function(){setTimeout(function(){kbFit();if(!document.documentElement.classList.contains('kbd')&&window.fitLayout)fitLayout()},60)});
+
 /* ===== Wspólne ===== */
 function renderMeta(){
  var old=!R.t||(Date.now()/1000-R.t>3*86400);
@@ -481,11 +658,11 @@ function renderMeta(){
 function when(t,dateOnly){var d=new Date(t*1000),a=new Date(),day=Math.round((new Date(a.toDateString())-new Date(d.toDateString()))/864e5);
  var w=day===0?'dziś':day===1?'wczoraj':d.toLocaleDateString('pl-PL',{day:'numeric',month:'long'});
  return dateOnly||day>1?w:w+', '+d.toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'})}
-function renderAll(){renderMeta();renderConv();renderSum();renderTape();if(window.fitLayout)fitLayout()}
-function setTab(t,anim){tab=t;ls('tab',String(t));
- [0,1].forEach(function(i){var p=$('p'+i);p.hidden=i!==t;p.classList.remove('in');
-  if(i===t&&anim){p.style.setProperty('--dx',t?1:-1);void p.offsetWidth;p.classList.add('in')}});
- $('tabs').classList.toggle('t1',t===1);
+function renderAll(){renderMeta();renderConv();renderSum();renderTape();if(window.renderNotes)renderNotes();if(window.fitLayout)fitLayout()}
+function setTab(t,anim){var prev=tab;tab=t;ls('tab',String(t));closeMenu();
+ [0,1,2].forEach(function(i){var p=$('p'+i);p.hidden=i!==t;p.classList.remove('in');
+  if(i===t&&anim){p.style.setProperty('--dx',t>prev?1:-1);void p.offsetWidth;p.classList.add('in')}});
+ $('tabs').style.setProperty('--ti',t);
  $('tabs').querySelectorAll('button').forEach(function(b){b.setAttribute('aria-selected',String(+b.dataset.t===t))});
  renderConv();renderSum()}
 // Kurs: open.er-api.com, a gdy nie działa – currency-api (jsDelivr, potem Cloudflare). Wszystkie z CORS, bez klucza.
@@ -631,6 +808,7 @@ function fitH(){var s=navigator.standalone,full=Math.max(screen.height,screen.wi
 // Zwarty nagłówek/pasek kart zależy od wysokości ekranu. Potem stopniowo: mniejszy wyświetlacz, bez ciekawostek.
 // Na każdym poziomie największe klawisze (58→44); bierzemy pierwszy poziom z klawiszami ≥ 52.
 function fitLayout(){var r=document.documentElement,p=$('p0'),q=$('p1'),ALLC=['tight','notv'];
+ if(r.classList.contains('kbd'))return; // przy otwartej klawiaturze systemowej nie przeliczamy układu
  // obie karty widoczne na czas pomiaru (nieaktywna niewidzialna)
  [p,q].forEach(function(x,i){x.hidden=false;x.style.visibility=i===tab?'':'hidden'});
  r.classList.toggle('c1',document.querySelector('.app').clientHeight<780);
